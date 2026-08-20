@@ -1,2 +1,29 @@
-<h1>CharacterNotes#new</h1>
-<p>Find me in app/views/character_notes/new.html.erb</p>
+<h1>対策メモの新規登録</h1>
+
+<%= form_with model: @character_note do |f| %>
+  <div>
+    <%= f.label :my_character, "自分の使用キャラ" %><br>
+    <%= f.text_field :my_character, placeholder: "例：ルーク" %>
+  </div>
+
+  <div>
+    <%= f.label :opponent_character, "相手キャラ" %><br>
+    <%= f.text_field :opponent_character, placeholder: "例：ルーク / ケン" %>
+  </div>
+
+  <div>
+    <%= f.label :quick_summary, "10秒要点（対戦直前に見る用）" %><br>
+    <%= f.text_field :quick_summary, placeholder: "例：立ち中Pに差し返し / 弾打たれたらパリィ" %>
+  </div>
+
+  <div>
+    <%= f.label :content, "詳細メモ" %><br>
+    <%= f.text_area :content, placeholder: "詳しい対策やコンボなど" %>
+  </div>
+
+  <br>
+  <%= f.submit "保存する" %>
+<% end %>
+
+<br>
+<%= link_to "一覧に戻る", character_notes_path %>
