@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  opponent_character: MyString
+  my_character: MyString
+  quick_summary: MyString
+  content: MyText
+
+two:
+  user: two
+  opponent_character: MyString
+  my_character: MyString
+  quick_summary: MyString
+  content: MyText

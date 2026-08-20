@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  match_log: one
+  defeat_tag: one
+
+two:
+  match_log: two
+  defeat_tag: two
