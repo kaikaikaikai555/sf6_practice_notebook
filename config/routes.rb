@@ -6,5 +6,5 @@ Rails.application.routes.draw do
   resources :character_notes
 
   # 対戦・敗因ログ
-  resources :match_logs, only: [:index, :new, :create]
+  resources :match_logs, only: [ :index, :new, :create ]
 end
