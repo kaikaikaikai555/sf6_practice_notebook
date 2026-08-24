@@ -2,13 +2,25 @@
 
 <%= link_to "新規メモ作成", new_character_note_path %>
 
+<div style="margin-top: 15px;">
+  <%= form_with url: character_notes_path, method: :get, local: true do |f| %>
+    <%= f.label :opponent_character, "相手キャラで絞り込み：" %>
+    <%= f.text_field :opponent_character, value: params[:opponent_character], placeholder: "例：ルーク" %>
+    <%= f.submit "検索" %>
+    <%= link_to "リセット", character_notes_path if params[:opponent_character].present? %>
+  <% end %>
+</div>
+
 <hr>
 
 <% @character_notes.each.with_index(1) do |note, i| %>
   <div>
-    <h3><%= i %>. 対<%= note.opponent_character %>（使用キャラ：<%= note.my_character %>）</h3>
+    <h3><%= i %>. <%= link_to "対#{note.opponent_character}", character_note_path(note) %> (使用キャラ：<%= note.my_character %>)</h3>
     <p><strong>10秒要点：</strong> <%= note.quick_summary %></p>
     <p><strong>詳細メモ：</strong> <%= note.content %></p>
+    <p><strong>最重要ポイント：</strong> <%= note.key_point %></p>
+    <p><strong>自分の意識・習得したいこと：</strong> <%= note.my_focus %></p>
+    <p><strong>自分の悪癖・よくやるミス：</strong> <%= note.bad_habit %></p>
     <%= button_to "削除", character_note_path(note), method: :delete %>
   </div>
   <hr>

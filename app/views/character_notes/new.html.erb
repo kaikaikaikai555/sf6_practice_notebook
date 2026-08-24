@@ -21,6 +21,21 @@
     <%= f.text_area :content, placeholder: "詳しい対策やコンボなど" %>
   </div>
 
+  <div>
+    <%= f.label :key_point, "最重要ポイント（相手対策）" %>
+    <%= f.text_area :key_point, placeholder: "例：中足に差し返しを狙う、OD昇竜のブッパ警戒" %>
+  </div>
+
+  <div>
+    <%= f.label :my_focus, "自分の意識・習得したいこと" %>
+    <%= f.text_area :my_focus, placeholder: "例：対空でラッシュを確実に止める、コンボミスを無くす" %>
+  </div>
+
+  <div>
+    <%= f.label :bad_habit, "自分の悪癖・よくやるミス" %>
+    <%= f.text_area :bad_habit, placeholder: "例：起き上がりに無駄なインパクトを押してしまう" %>
+  </div>
+  
   <br>
   <%= f.submit "保存する" %>
 <% end %>

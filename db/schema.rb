@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_20_175335) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_24_075658) do
   create_table "character_notes", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "opponent_character"
@@ -19,6 +19,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_20_175335) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "my_focus"
+    t.text "bad_habit"
+    t.text "key_point"
     t.index ["user_id"], name: "index_character_notes_on_user_id"
   end
 

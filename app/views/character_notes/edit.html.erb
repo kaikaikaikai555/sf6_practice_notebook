@@ -1,0 +1,45 @@
+<h1>対策メモの編集</h1>
+
+<%= form_with model: @character_note do |f| %>
+  <div>
+    <%= f.label :my_character, "自分の使用キャラ" %><br>
+    <%= f.text_field :my_character %>
+  </div>
+
+  <div>
+    <%= f.label :opponent_character, "相手キャラ" %><br>
+    <%= f.text_field :opponent_character %>
+  </div>
+
+  <div>
+    <%= f.label :quick_summary, "10秒要点（対戦直前に見る用）" %><br>
+    <%= f.text_field :quick_summary %>
+  </div>
+
+  <div>
+    <%= f.label :content, "詳細メモ" %><br>
+    <%= f.text_area :content %>
+  </div>
+
+  <div>
+    <%= f.label :key_point, "最重要ポイント（相手対策）" %><br>
+    <%= f.text_area :key_point %>
+  </div>
+
+  <div>
+    <%= f.label :my_focus, "自分の意識・習得したいこと" %><br>
+    <%= f.text_area :my_focus %>
+  </div>
+
+  <div>
+    <%= f.label :bad_habit, "自分の悪癖・よくやるミス" %><br>
+    <%= f.text_area :bad_habit %>
+  </div>
+  
+  <br>
+  <%= f.submit "更新する" %>
+<% end %>
+
+<br>
+<%= link_to "詳細に戻る", character_note_path(@character_note) %> |
+<%= link_to "一覧に戻る", character_notes_path %>
