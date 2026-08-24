@@ -1,0 +1,23 @@
+<h2>vs <%= @character_note.opponent_character %>（使用：<%= @character_note.my_character %>）</h2>
+
+<hr>
+
+<h3>【最重要ポイント】</h3>
+<p><%= @character_note.key_point %></p>
+
+<h3>【自分の意識・習得したいこと】</h3>
+<p><%= @character_note.my_focus %></p>
+
+<h3>【自分の悪癖・よくやるミス】</h3>
+<p><%= @character_note.bad_habit %></p>
+
+<hr>
+
+<details>
+  <summary>詳しい対策メモを開く</summary>
+  <p><%= @character_note.content %></p>
+</details>
+
+<br>
+<%= link_to "編集する", edit_character_note_path(@character_note) %> |
+<%= link_to "一覧に戻る", character_notes_path %>
