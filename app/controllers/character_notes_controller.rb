@@ -6,7 +6,7 @@ class CharacterNotesController < ApplicationController
     else
       # 検索していない時は、全件表示
       @character_notes = CharacterNote.all
-  end
+    end
 end
 
   def new

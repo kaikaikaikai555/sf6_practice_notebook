@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_24_075658) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_24_102538) do
   create_table "character_notes", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "opponent_character"
@@ -49,6 +49,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_24_075658) do
     t.text "memo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "character_note_id", null: false
+    t.index ["character_note_id"], name: "index_match_logs_on_character_note_id"
     t.index ["user_id"], name: "index_match_logs_on_user_id"
   end
 
@@ -63,5 +65,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_24_075658) do
   add_foreign_key "defeat_tags", "users"
   add_foreign_key "match_log_defeat_tags", "defeat_tags"
   add_foreign_key "match_log_defeat_tags", "match_logs"
+  add_foreign_key "match_logs", "character_notes"
   add_foreign_key "match_logs", "users"
 end
