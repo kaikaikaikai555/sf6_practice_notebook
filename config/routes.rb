@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   root "character_notes#index"
 
   # キャラ別・対策メモ
-  resources :character_notes, only: [ :index, :new, :create, :show, :edit, :update, :destroy ]
-
-  # 対戦・敗因ログ
-  resources :match_logs, only: [ :index, :new, :create ]
+  resources :character_notes, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
+    # 対戦・敗因ログ（character_notes の中に入れる）
+    resources :match_logs, only: [:create]
+  end
 end
