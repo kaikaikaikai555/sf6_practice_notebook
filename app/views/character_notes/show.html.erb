@@ -1,99 +1,62 @@
-<h2>vs <%= @character_note.opponent_character %>（使用：<%= @character_note.my_character %>）</h2>
+<div style="max-width: 800px; margin: 0 auto; padding: 20px;">
+  <div style="margin-bottom: 16px;">
+    <%= link_to "← ホームに戻る", character_notes_path, style: "color: #2563eb; text-decoration: underline; font-size: 14px;" %>
+  </div>
 
-<hr>
+  <h1 style="font-size: 26px; font-weight: bold; margin-bottom: 20px;">vs <%= @character_note.opponent_character %> (使用: <%= @character_note.my_character %>)</h1>
 
-<h3>【最重要ポイント】</h3>
-<p><%= @character_note.key_point %></p>
+  <!-- 対戦直前チェック（10秒要点） -->
+  <div style="background-color: #fff; padding: 20px; border-radius: 8px; border: 1px solid #e5e7eb; margin-bottom: 24px;">
+    <h2 style="font-size: 18px; font-weight: bold; margin: 0 0 16px; color: #d97706; display: flex; align-items: center; gap: 6px;">
+      ⚡ 対戦直前チェック (10秒要点)
+    </h2>
 
-<h3>【自分の意識・習得したいこと】</h3>
-<p><%= @character_note.my_focus %></p>
-
-<h3>【自分の悪癖・よくやるミス】</h3>
-<p><%= @character_note.bad_habit %></p>
-
-<hr>
-
-<details>
-  <summary>詳しい対策メモを開く</summary>
-  <p><%= @character_note.content %></p>
-</details>
-
-<br>
-<%= link_to "編集する", edit_character_note_path(@character_note) %> |
-<%= link_to "一覧に戻る", character_notes_path %>
-
-<hr class="my-6 border-gray-300">
-
-<!-- 10秒反省：対戦ログ登録フォーム -->
-<div class="bg-white p-4 rounded-lg shadow-md mb-6">
-  <h2 class="text-xl font-bold mb-4">10秒反省（対戦ログ追加）</h2>
-
-  <%= form_with(model: [@character_note, MatchLog.new], local: true) do |f| %>
-    <!-- 勝敗選択 -->
-    <div class="mb-4">
-      <label class="block text-sm font-bold mb-2">結果</label>
-      <div class="flex gap-4">
-        <label class="flex items-center gap-1 cursor-pointer">
-          <%= f.radio_button :result, 'WIN', class: "radio radio-primary" %>
-          <span class="font-bold text-blue-600">WIN</span>
-        </label>
-        <label class="flex items-center gap-1 cursor-pointer">
-          <%= f.radio_button :result, 'LOSE', class: "radio radio-error", checked: true %>
-          <span class="font-bold text-red-600">LOSE</span>
-        </label>
-      </div>
+    <div style="margin-bottom: 12px;">
+      <span style="font-weight: bold; color: #dc2626; font-size: 14px; display: block; margin-bottom: 4px;">最重要ポイント</span>
+      <p style="margin: 0; background: #fef2f2; padding: 8px 12px; border-radius: 4px; border-left: 4px solid #dc2626; font-size: 14px;"><%= @character_note.key_point.presence || "未入力" %></p>
     </div>
 
-    <!-- 敗因タグ選択 -->
-    <div class="mb-4">
-      <label class="block text-sm font-bold mb-2">敗因タグ</label>
-      <div class="flex flex-wrap gap-2">
-        <%= f.collection_check_boxes :defeat_tag_ids, DefeatTag.all, :id, :name do |b| %>
-          <label class="inline-flex items-center gap-1 bg-gray-100 px-3 py-1 rounded border cursor-pointer hover:bg-gray-200">
-            <%= b.check_box %>
-            <span class="text-sm"><%= b.text %></span>
-          </label>
+    <div style="margin-bottom: 12px;">
+      <span style="font-weight: bold; color: #2563eb; font-size: 14px; display: block; margin-bottom: 4px;">自分の意識・習得したいこと</span>
+      <p style="margin: 0; background: #eff6ff; padding: 8px 12px; border-radius: 4px; border-left: 4px solid #2563eb; font-size: 14px;"><%= (@character_note.try(:my_focus) || @character_note.try(:my_awareness)).presence || "未入力" %></p>
+    </div>
+
+    <div style="margin-bottom: 12px;">
+      <span style="font-weight: bold; color: #374151; font-size: 14px; display: block; margin-bottom: 4px;">自分の悪癖・よくやるミス</span>
+      <p style="margin: 0; background: #f3f4f6; padding: 8px 12px; border-radius: 4px; border-left: 4px solid #4b5563; font-size: 14px;"><%= @character_note.bad_habit.presence || "未入力" %></p>
+    </div>
+
+    <% if @character_note.try(:content).present? || @character_note.try(:detail_memo).present? %>
+      <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #eee;">
+        <span style="font-weight: bold; font-size: 14px; display: block; margin-bottom: 4px;">詳細メモ</span>
+        <p style="margin: 0; font-size: 14px; white-space: pre-wrap; color: #4b5563;"><%= @character_note.try(:content) || @character_note.try(:detail_memo) %></p>
+      </div>
+    <% end %>
+
+    <div style="margin-top: 16px; text-align: right;">
+      <%= link_to "対策メモを編集する", edit_character_note_path(@character_note), style: "font-size: 14px; color: #2563eb; font-weight: bold; text-decoration: underline;" %>
+    </div>
+  </div>
+
+  <!-- このキャラに対する対戦履歴 -->
+  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">対戦履歴 (vs <%= @character_note.opponent_character %>)</h2>
+  
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <% @match_logs.each do |log| %>
+      <div style="background-color: #fff; padding: 14px; border-radius: 6px; border: 1px solid #e5e7eb; border-left: 4px solid <%= log.result == 'WIN' ? '#2563eb' : '#dc2626' %>;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <span style="font-weight: bold; color: <%= log.result == 'WIN' ? '#2563eb' : '#dc2626' %>;"><%= log.result %></span>
+            <span style="color: #6b7280; font-size: 12px; margin-left: 8px;"><%= log.created_at.strftime("%Y/%m/%d %H:%M") %></span>
+          </div>
+          <%= link_to "詳細", match_log_path(log), style: "font-size: 12px; color: #2563eb; text-decoration: underline;" %>
+        </div>
+        <% if log.result == 'WIN' && log.win_reason.present? %>
+          <p style="margin: 4px 0 0; font-size: 13px; color: #1e40af;"><strong>【勝因】</strong> <%= log.win_reason %></p>
+        <% elsif log.result == 'LOSE' && log.defeat_reason.present? %>
+          <p style="margin: 4px 0 0; font-size: 13px; color: #991b1b;"><strong>【敗因】</strong> <%= log.defeat_reason %></p>
         <% end %>
       </div>
-    </div>
-
-    <!-- メモ -->
-    <div class="mb-4">
-      <%= f.label :memo, "一言メモ", class: "block text-sm font-bold mb-1" %>
-      <%= f.text_field :memo, class: "w-full p-2 border rounded", placeholder: "例：対空意識が漏れていた" %>
-    </div>
-
-    <%= f.submit "ログを記録する", class: "w-full bg-blue-600 text-white font-bold py-2 rounded hover:bg-blue-700 cursor-pointer" %>
-  <% end %>
-</div>
-
-<!-- 過去の対戦ログ一覧 -->
-<div class="bg-white p-4 rounded-lg shadow-md">
-  <h2 class="text-xl font-bold mb-4">対戦履歴</h2>
-  <% if @character_note.match_logs.any? %>
-    <ul class="divide-y divide-gray-200">
-      <% @character_note.match_logs.order(created_at: :desc).each do |log| %>
-        <li class="py-2">
-          <div class="flex justify-between items-center">
-            <span class="font-bold <%= log.result == 'WIN' ? 'text-blue-600' : 'text-red-600' %>">
-              <%= log.result %>
-            </span>
-            <span class="text-xs text-gray-500"><%= log.created_at.strftime("%Y/%m/%d %H:%M") %></span>
-          </div>
-          <% if log.defeat_tags.any? %>
-            <div class="flex flex-wrap gap-1 mt-1">
-              <% log.defeat_tags.each do |tag| %>
-                <span class="bg-red-100 text-red-800 text-xs px-2 py-0.5 rounded"><%= tag.name %></span>
-              <% end %>
-            </div>
-          <% end %>
-          <% if log.memo.present? %>
-            <p class="text-sm text-gray-700 mt-1"><%= log.memo %></p>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p class="text-gray-500 text-sm">対戦ログはまだありません。</p>
-  <% end %>
+    <% end %>
+  </div>
 </div>

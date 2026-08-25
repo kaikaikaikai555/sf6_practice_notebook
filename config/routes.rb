@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
-  # トップページ（対策メモ一覧に設定）
   root "character_notes#index"
 
-  # キャラ別・対策メモ
-  resources :character_notes, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
-    # 対戦・敗因ログ（character_notes の中に入れる）
-    resources :match_logs, only: [:create]
+  resources :character_notes do
+    collection do
+      get :redirect_by_opponent
+    end
   end
+
+  resources :match_logs
 end

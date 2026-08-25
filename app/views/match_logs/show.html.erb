@@ -1,0 +1,48 @@
+<div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+  <div style="margin-bottom: 16px;">
+    <%= link_to "← ホームに戻る", character_notes_path, style: "color: #2563eb; text-decoration: underline; font-size: 14px;" %>
+  </div>
+
+  <div style="background-color: #fff; padding: 24px; border-radius: 8px; border: 1px solid #e5e7eb; border-top: 6px solid <%= @match_log.result == 'WIN' ? '#2563eb' : '#dc2626' %>;">
+    <h1 style="font-size: 22px; font-weight: bold; margin-bottom: 8px;">対戦ログ詳細</h1>
+    <p style="color: #6b7280; font-size: 13px; margin-bottom: 16px;"><%= @match_log.created_at.strftime("%Y年%m月%d日 %H:%M") %></p>
+
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #eee;">
+      <span style="font-size: 24px; font-weight: bold; color: <%= @match_log.result == 'WIN' ? '#2563eb' : '#dc2626' %>;"><%= @match_log.result %></span>
+      <span style="font-size: 16px; font-weight: bold;">(自分) <%= @match_log.my_character %> vs (相手) <%= @match_log.opponent_character %></span>
+    </div>
+
+    <% if @match_log.result == 'WIN' %>
+      <div style="margin-bottom: 20px;">
+        <span style="font-weight: bold; color: #1e40af; font-size: 14px; display: block; margin-bottom: 4px;">【勝因メモ】</span>
+        <p style="margin: 0; background-color: #eff6ff; padding: 12px; border-radius: 6px; font-size: 14px;"><%= @match_log.win_reason.presence || "記載なし" %></p>
+      </div>
+    <% else %>
+      <% if @match_log.defeat_tags.any? %>
+        <div style="margin-bottom: 16px;">
+          <span style="font-weight: bold; color: #991b1b; font-size: 14px; display: block; margin-bottom: 6px;">【敗因タグ】</span>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <% @match_log.defeat_tags.each do |tag| %>
+              <span style="background-color: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: bold;"><%= tag.name %></span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <div style="margin-bottom: 16px;">
+        <span style="font-weight: bold; color: #991b1b; font-size: 14px; display: block; margin-bottom: 4px;">【敗因詳細メモ】</span>
+        <p style="margin: 0; background-color: #fef2f2; padding: 12px; border-radius: 6px; font-size: 14px;"><%= @match_log.defeat_reason.presence || "記載なし" %></p>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <span style="font-weight: bold; color: #374151; font-size: 14px; display: block; margin-bottom: 4px;">【改善メモ・次回の意識】</span>
+        <p style="margin: 0; background-color: #f9fafb; padding: 12px; border-radius: 6px; font-size: 14px;"><%= @match_log.memo.presence || "記載なし" %></p>
+      </div>
+    <% end %>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
+      <%= link_to "このキャラの対策・反省メモを開く →", redirect_by_opponent_character_notes_path(opponent_character: @match_log.opponent_character), style: "font-size: 14px; color: #4f46e5; font-weight: bold; text-decoration: underline;" %>
+      <%= button_to "このログを削除する", match_log_path(@match_log), method: :delete, data: { confirm: "本当に削除しますか？" }, style: "background-color: #ef4444; color: white; padding: 6px 12px; border-radius: 4px; border: none; font-size: 12px; cursor: pointer;" %>
+    </div>
+  </div>
+</div>

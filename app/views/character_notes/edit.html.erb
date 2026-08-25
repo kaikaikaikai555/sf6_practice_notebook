@@ -1,45 +1,43 @@
-<h1>対策メモの編集</h1>
+<div style="margin-bottom: 24px;">
+  <%= link_to "← ホームに戻る", character_notes_path, style: "color: #2563eb; text-decoration: underline; font-size: 14px;" %>
+  <h1 style="font-size: 24px; font-weight: bold; margin-top: 8px;">対策メモ編集</h1>
+</div>
 
-<%= form_with model: @character_note do |f| %>
-  <div>
-    <%= f.label :my_character, "自分の使用キャラ" %><br>
-    <%= f.text_field :my_character %>
-  </div>
+<div style="background-color: #fff; padding: 24px; border-radius: 8px; border: 1px solid #e5e7eb; max-width: 600px;">
+  <%= form_with model: @character_note, local: true do |f| %>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :my_character, "自分の使用キャラ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px;" %>
+      <%= f.text_field :my_character, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :opponent_character, "相手キャラ" %><br>
-    <%= f.text_field :opponent_character %>
-  </div>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :opponent_character, "対戦相手のキャラ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px;" %>
+      <%= f.text_field :opponent_character, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :quick_summary, "10秒要点（対戦直前に見る用）" %><br>
-    <%= f.text_field :quick_summary %>
-  </div>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :key_point, "最重要ポイント (相手対策)", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #dc2626;" %>
+      <%= f.text_area :key_point, rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :content, "詳細メモ" %><br>
-    <%= f.text_area :content %>
-  </div>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :my_awareness, "自分の意識・習得したいこと", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #2563eb;" %>
+      <%= f.text_area :my_awareness, rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :key_point, "最重要ポイント（相手対策）" %><br>
-    <%= f.text_area :key_point %>
-  </div>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :bad_habit, "自分の悪癖・よくやるミス", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #374151;" %>
+      <%= f.text_area :bad_habit, rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :my_focus, "自分の意識・習得したいこと" %><br>
-    <%= f.text_area :my_focus %>
-  </div>
+    <div style="margin-bottom: 20px;">
+      <%= f.label :detail_memo, "詳細メモ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px;" %>
+      <%= f.text_area :detail_memo, rows: 5, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :bad_habit, "自分の悪癖・よくやるミス" %><br>
-    <%= f.text_area :bad_habit %>
-  </div>
-  
-  <br>
-  <%= f.submit "更新する" %>
-<% end %>
-
-<br>
-<%= link_to "詳細に戻る", character_note_path(@character_note) %> |
-<%= link_to "一覧に戻る", character_notes_path %>
+    <div style="display: flex; gap: 16px; align-items: center;">
+      <%= f.submit "更新する", style: "background-color: #2563eb; color: white; padding: 10px 24px; border-radius: 4px; font-weight: bold; cursor: pointer; border: none;" %>
+      <%= link_to "キャンセル", character_note_path(@character_note), style: "font-size: 14px; color: #6b7280; text-decoration: underline;" %>
+    </div>
+  <% end %>
+</div>
