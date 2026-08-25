@@ -1,44 +1,43 @@
-<h1>対策メモの新規登録</h1>
+<div style="margin-bottom: 24px;">
+  <%= link_to "← ホームに戻る", character_notes_path, style: "color: #2563eb; text-decoration: underline; font-size: 14px;" %>
+  <h1 style="font-size: 24px; font-weight: bold; margin-top: 8px;">対策メモ新規作成</h1>
+</div>
 
-<%= form_with model: @character_note do |f| %>
-  <div>
-    <%= f.label :my_character, "自分の使用キャラ" %><br>
-    <%= f.text_field :my_character, placeholder: "例：ルーク" %>
-  </div>
+<div style="background-color: #fff; padding: 24px; border-radius: 8px; border: 1px solid #e5e7eb; max-width: 600px;">
+  <%= form_with model: @character_note, local: true do |f| %>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :my_character, "自分の使用キャラ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px;" %>
+      <%= f.text_field :my_character, placeholder: "例：リュウ", style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :opponent_character, "相手キャラ" %><br>
-    <%= f.text_field :opponent_character, placeholder: "例：ルーク / ケン" %>
-  </div>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :opponent_character, "対戦相手のキャラ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px;" %>
+      <%= f.text_field :opponent_character, placeholder: "例：豪鬼", style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :quick_summary, "10秒要点（対戦直前に見る用）" %><br>
-    <%= f.text_field :quick_summary, placeholder: "例：立ち中Pに差し返し / 弾打たれたらパリィ" %>
-  </div>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :key_point, "最重要ポイント (相手対策)", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #dc2626;" %>
+      <%= f.text_area :key_point, placeholder: "例：中足に差し返しを狙う、OD昇竜のブッパ警戒", rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :content, "詳細メモ" %><br>
-    <%= f.text_area :content, placeholder: "詳しい対策やコンボなど" %>
-  </div>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :my_awareness, "自分の意識・習得したいこと", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #2563eb;" %>
+      <%= f.text_area :my_awareness, placeholder: "例：対空でラッシュを確実に止める、コンボ選択ミスを減らす", rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :key_point, "最重要ポイント（相手対策）" %>
-    <%= f.text_area :key_point, placeholder: "例：中足に差し返しを狙う、OD昇竜のブッパ警戒" %>
-  </div>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :bad_habit, "自分の悪癖・よくやるミス", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #374151;" %>
+      <%= f.text_area :bad_habit, placeholder: "例：起き上がりに無駄なインパクトを押してしまう", rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :my_focus, "自分の意識・習得したいこと" %>
-    <%= f.text_area :my_focus, placeholder: "例：対空でラッシュを確実に止める、コンボミスを無くす" %>
-  </div>
+    <div style="margin-bottom: 20px;">
+      <%= f.label :detail_memo, "詳細メモ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px;" %>
+      <%= f.text_area :detail_memo, placeholder: "詳しい対策やフレーム情報、確定反撃など", rows: 5, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
 
-  <div>
-    <%= f.label :bad_habit, "自分の悪癖・よくやるミス" %>
-    <%= f.text_area :bad_habit, placeholder: "例：起き上がりに無駄なインパクトを押してしまう" %>
-  </div>
-  
-  <br>
-  <%= f.submit "保存する" %>
-<% end %>
-
-<br>
-<%= link_to "一覧に戻る", character_notes_path %>
+    <div style="display: flex; gap: 16px; align-items: center;">
+      <%= f.submit "保存する", style: "background-color: #2563eb; color: white; padding: 10px 24px; border-radius: 4px; font-weight: bold; cursor: pointer; border: none;" %>
+      <%= link_to "キャンセル", character_notes_path, style: "font-size: 14px; color: #6b7280; text-decoration: underline;" %>
+    </div>
+  <% end %>
+</div>

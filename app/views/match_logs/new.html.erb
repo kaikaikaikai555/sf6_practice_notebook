@@ -1,0 +1,96 @@
+<div style="max-w-xl; margin-bottom: 24px;">
+  <%= link_to "← ホームに戻る", character_notes_path, style: "color: #2563eb; text-decoration: underline; font-size: 14px;" %>
+  <h1 style="font-size: 24px; font-weight: bold; margin-top: 8px;">10秒反省（対戦ログ追加）</h1>
+</div>
+
+<div style="background-color: #fff; padding: 24px; border-radius: 8px; border: 1px solid #e5e7eb; max-width: 600px;">
+  <%= form_with model: @match_log, local: true do |f| %>
+    <div style="margin-bottom: 16px;">
+      <%= f.label :my_character, "自分の使用キャラ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px;" %>
+      <%= f.text_field :my_character, placeholder: "例：リュウ", style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
+
+    <div style="margin-bottom: 16px;">
+      <%= f.label :opponent_character, "対戦相手のキャラ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px;" %>
+      <%= f.text_field :opponent_character, placeholder: "例：豪鬼", style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <span style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">結果</span>
+      <div style="display: flex; gap: 24px; align-items: center;">
+        <label style="font-weight: bold; color: #2563eb; cursor: pointer; font-size: 18px;">
+          <%= f.radio_button :result, "WIN", id: "result_win" %> WIN
+        </label>
+        <label style="font-weight: bold; color: #dc2626; cursor: pointer; font-size: 18px;">
+          <%= f.radio_button :result, "LOSE", id: "result_lose", checked: true %> LOSE
+        </label>
+      </div>
+    </div>
+
+    <!-- WIN選択時に表示 -->
+    <div id="win_fields" style="margin-bottom: 16px; display: none;">
+      <%= f.label :win_reason, "勝因メモ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #1e40af;" %>
+      <%= f.text_area :win_reason, placeholder: "例：対空意識が機能した、インパクト返しが刺さった", rows: 4, style: "width: 100%; padding: 8px; border: 1px solid #93c5fd; border-radius: 4px; background-color: #eff6ff; box-sizing: border-box;" %>
+    </div>
+
+    <!-- LOSE選択時に表示 -->
+    <div id="lose_fields" style="margin-bottom: 16px;">
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #991b1b;">敗因タグ</label>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; border: 1px solid #fca5a5; padding: 12px; border-radius: 4px; background-color: #fef2f2;">
+          <%= f.collection_check_boxes :defeat_tag_ids, DefeatTag.all, :id, :name do |b| %>
+            <label style="display: inline-flex; align-items: center; gap: 4px; background: #fff; padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; font-size: 12px; cursor: pointer;">
+              <%= b.check_box %>
+              <span><%= b.text %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <%= f.label :defeat_reason, "敗因詳細メモ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #991b1b;" %>
+        <%= f.text_area :defeat_reason, placeholder: "例：相手の飛びを通しすぎた、ラッシュへの差し返しが遅れた", rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #fca5a5; border-radius: 4px; background-color: #fef2f2; box-sizing: border-box;" %>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <%= f.label :memo, "改善メモ・次回の意識", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #374151;" %>
+        <%= f.text_area :memo, placeholder: "例：対空意識を強く持つ、地上戦の技振りを精査する", rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 16px; align-items: center; margin-top: 24px;">
+      <%= f.submit "ログを記録する", style: "background-color: #dc2626; color: white; padding: 10px 24px; border-radius: 4px; font-weight: bold; cursor: pointer; border: none;" %>
+      <%= link_to "キャンセル", character_notes_path, style: "font-size: 14px; color: #6b7280; text-decoration: underline;" %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  function setupToggleFields() {
+    const winRadio = document.getElementById("result_win");
+    const loseRadio = document.getElementById("result_lose");
+    const winFields = document.getElementById("win_fields");
+    const loseFields = document.getElementById("lose_fields");
+
+    if (!winRadio || !loseRadio || !winFields || !loseFields) return;
+
+    function toggle() {
+      if (winRadio.checked) {
+        winFields.style.display = "block";
+        loseFields.style.display = "none";
+      } else {
+        winFields.style.display = "none";
+        loseFields.style.display = "block";
+      }
+    }
+
+    winRadio.onclick = toggle;
+    loseRadio.onclick = toggle;
+    toggle();
+  }
+
+  // Turbo画面遷移と通常のページロードの両方に対応
+  document.addEventListener("turbo:load", setupToggleFields);
+  document.addEventListener("DOMContentLoaded", setupToggleFields);
+  setupToggleFields();
+</script>
