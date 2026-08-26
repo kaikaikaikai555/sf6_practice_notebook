@@ -39,6 +39,15 @@ class MatchLogsController < ApplicationController
   private
 
   def match_log_params
-    params.require(:match_log).permit(:result, :memo, :win_reason, :defeat_reason, :my_character, :opponent_character, defeat_tag_ids: [])
+    params.require(:match_log).permit(
+      :my_character,
+      :opponent_character,
+      :result,
+      :win_reason,
+      :defeat_reason,
+      :memo,
+      :character_note_id,
+      defeat_tag_ids: []
+    )
   end
 end

@@ -36,17 +36,34 @@
     <!-- LOSE選択時に表示 -->
     <div id="lose_fields" style="margin-bottom: 16px;">
       <div style="margin-bottom: 16px;">
-        <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #991b1b;">敗因タグ</label>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; border: 1px solid #fca5a5; padding: 12px; border-radius: 4px; background-color: #fef2f2;">
-          <%= f.collection_check_boxes :defeat_tag_ids, DefeatTag.all, :id, :name do |b| %>
-            <label style="display: inline-flex; align-items: center; gap: 4px; background: #fff; padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; font-size: 12px; cursor: pointer;">
-              <%= b.check_box %>
-              <span><%= b.text %></span>
-            </label>
+        <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: #991b1b;">敗因タグ（カテゴリをクリックして選択）</label>
+
+        <% 
+          categories = {
+            "立ち回り" => ["甘い弾撃ち", "飛びを通される", "被弾しすぎ", "ライン下げすぎ", "通らない行動のこすりすぎ", "偏った技振り", "甘い鳥籠"],
+            "攻撃・コンボ・起き攻め" => ["コンボミス", "起き攻めがワンパターン"],
+            "防御・切り返し" => ["インパクト返せてない", "暴れすぎ", "防御拓がワンパターン", "OD無敵に頼りすぎ", "投げ抜け判断ミス", "端から脱出できていない"],
+            "リソース・判断" => ["ゲージ管理", "リーサル逃し", "終盤でのリスク＜リターンになった思考"]
+          }
+        %>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <% categories.each do |category_name, tag_names| %>
+            <details style="border: 1px solid #fca5a5; border-radius: 6px; background-color: #fff; overflow: hidden;" open>
+              <summary style="padding: 10px 12px; background-color: #fef2f2; color: #991b1b; font-weight: bold; font-size: 13px; cursor: pointer; user-select: none;">
+                ▶ <%= category_name %>
+              </summary>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; background-color: #fff;">
+                <% DefeatTag.where(name: tag_names).each do |tag| %>
+                  <label style="display: inline-flex; align-items: center; gap: 4px; background: #fff5f5; padding: 6px 10px; border-radius: 4px; border: 1px solid #fca5a5; font-size: 12px; cursor: pointer;">
+                    <%= check_box_tag "match_log[defeat_tag_ids][]", tag.id, @match_log.defeat_tag_ids.include?(tag.id) %>
+                    <span><%= tag.name %></span>
+                  </label>
+                <% end %>
+              </div>
+            </details>
           <% end %>
         </div>
-      </div>
-
       <div style="margin-bottom: 16px;">
         <%= f.label :defeat_reason, "敗因詳細メモ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #991b1b;" %>
         <%= f.text_area :defeat_reason, placeholder: "例：相手の飛びを通しすぎた、ラッシュへの差し返しが遅れた", rows: 3, style: "width: 100%; padding: 8px; border: 1px solid #fca5a5; border-radius: 4px; background-color: #fef2f2; box-sizing: border-box;" %>

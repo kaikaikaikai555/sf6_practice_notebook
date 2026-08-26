@@ -25,8 +25,15 @@ class CharacterNotesController < ApplicationController
 
   def show
     @match_logs = MatchLog.where(opponent_character: @character_note.opponent_character).order(created_at: :desc)
-  end
 
+    # 該当キャラの敗因タグを取得してカウント順に並べる
+    @defeat_tag_counts = DefeatTag.joins(:match_logs)
+                                  .where(match_logs: { opponent_character: @character_note.opponent_character })
+                                  .group("defeat_tags.id", "defeat_tags.name")
+                                  .select("defeat_tags.name, COUNT(match_logs.id) as tag_count")
+                                  .order("tag_count DESC")
+  end
+  
   def new
     @character_note = CharacterNote.new(opponent_character: params[:opponent_character])
   end

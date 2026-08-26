@@ -36,18 +36,33 @@
         </div>
 
         <% if log.result == 'WIN' && log.win_reason.present? %>
-          <p style="margin: 4px 0 0; font-size: 14px; color: #1e40af;"><strong>【勝因メモ】</strong> <%= log.win_reason %></p>
+          <p style="margin: 4px 0 0; font-size: 14px; color: #1e40af;"><strong>【勝因】</strong> <%= log.win_reason %></p>
         <% elsif log.result == 'LOSE' %>
+          <!-- 敗因タグの表示 -->
           <% if log.defeat_tags.any? %>
             <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px;">
               <% log.defeat_tags.each do |tag| %>
-                <span style="background-color: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;"><%= tag.name %></span>
+                <span style="background-color: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-size: 12px;">
+                  <%= tag.name %>
+                </span>
               <% end %>
             </div>
           <% end %>
-          <% if log.defeat_reason.present? %>
-            <p style="margin: 6px 0 0; font-size: 14px; color: #991b1b;"><strong>【敗因メモ】</strong> <%= log.defeat_reason %></p>
-          <% end %>
+
+          <!-- 敗因メモ & 改善案の左右並び表示 -->
+          <div style="display: flex; gap: 12px; margin-top: 8px; font-size: 13px;">
+            <% if log.defeat_reason.present? %>
+              <div style="flex: 1; background: #fef2f2; padding: 8px 12px; border-radius: 4px; color: #991b1b;">
+                <strong>【敗因】</strong> <%= log.defeat_reason %>
+              </div>
+            <% end %>
+
+            <% if log.memo.present? %>
+              <div style="flex: 1; background: #f0f9ff; padding: 8px 12px; border-radius: 4px; color: #1e40af;">
+                <strong>【改善案】</strong> <%= log.memo %>
+              </div>
+            <% end %>
+          </div>
         <% end %>
 
         <div style="margin-top: 10px; text-align: right;">
