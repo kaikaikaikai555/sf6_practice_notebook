@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_25_105819) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_27_003120) do
   create_table "character_notes", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "opponent_character"
@@ -22,24 +22,27 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_25_105819) do
     t.text "my_focus"
     t.text "bad_habit"
     t.text "key_point"
+    t.text "my_awareness"
+    t.text "detail_memo"
     t.index ["user_id"], name: "index_character_notes_on_user_id"
   end
 
   create_table "defeat_tags", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "name"
+    t.string "name", null: false
+    t.string "category"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_defeat_tags_on_user_id"
   end
 
-  create_table "match_log_defeat_tags", force: :cascade do |t|
-    t.integer "match_log_id", null: false
+  create_table "defeat_tags_match_logs", force: :cascade do |t|
     t.integer "defeat_tag_id", null: false
+    t.integer "match_log_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["defeat_tag_id"], name: "index_match_log_defeat_tags_on_defeat_tag_id"
-    t.index ["match_log_id"], name: "index_match_log_defeat_tags_on_match_log_id"
+    t.index ["defeat_tag_id"], name: "index_defeat_tags_match_logs_on_defeat_tag_id"
+    t.index ["match_log_id"], name: "index_defeat_tags_match_logs_on_match_log_id"
   end
 
   create_table "match_logs", force: :cascade do |t|
@@ -62,12 +65,17 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_25_105819) do
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "character_notes", "users"
   add_foreign_key "defeat_tags", "users"
-  add_foreign_key "match_log_defeat_tags", "defeat_tags"
-  add_foreign_key "match_log_defeat_tags", "match_logs"
+  add_foreign_key "defeat_tags_match_logs", "defeat_tags"
+  add_foreign_key "defeat_tags_match_logs", "match_logs"
   add_foreign_key "match_logs", "character_notes"
   add_foreign_key "match_logs", "users"
 end

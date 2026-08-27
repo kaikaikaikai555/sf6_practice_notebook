@@ -1,10 +1,18 @@
-<div style="max-w-xl; margin-bottom: 24px;">
+<div style="max-width: 600px; margin-bottom: 24px;">
   <%= link_to "← ホームに戻る", character_notes_path, style: "color: #2563eb; text-decoration: underline; font-size: 14px;" %>
   <h1 style="font-size: 24px; font-weight: bold; margin-top: 8px;">10秒反省（対戦ログ追加）</h1>
 </div>
 
 <div style="background-color: #fff; padding: 24px; border-radius: 8px; border: 1px solid #e5e7eb; max-width: 600px;">
   <%= form_with model: @match_log, local: true do |f| %>
+    
+    <%# 💡 シンプルな警告文を表示 %>
+    <% if @match_log.errors.any? %>
+      <div style="background-color: #fef2f2; border: 1px solid #f87171; color: #991b1b; padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+        <p style="font-weight: bold; margin: 0; font-size: 14px;">自分と相手のキャラクター名を入力してください。</p>
+      </div>
+    <% end %>
+
     <div style="margin-bottom: 16px;">
       <%= f.label :my_character, "自分の使用キャラ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px;" %>
       <%= f.text_field :my_character, placeholder: "例：リュウ", style: "width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
@@ -30,20 +38,69 @@
     <!-- WIN選択時に表示 -->
     <div id="win_fields" style="margin-bottom: 16px; display: none;">
       <%= f.label :win_reason, "勝因メモ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #1e40af;" %>
-      <%= f.text_area :win_reason, placeholder: "例：対空意識が機能した、インパクト返しが刺さった", rows: 4, style: "width: 100%; padding: 8px; border: 1px solid #93c5fd; border-radius: 4px; background-color: #eff6ff; box-sizing: border-box;" %>
+      <%= f.text_area :win_reason, placeholder: "例：対空意識が機能した、インパクト返しが刺사った", rows: 4, style: "width: 100%; padding: 8px; border: 1px solid #93c5fd; border-radius: 4px; background-color: #eff6ff; box-sizing: border-box;" %>
     </div>
 
     <!-- LOSE選択時に表示 -->
     <div id="lose_fields" style="margin-bottom: 16px;">
       <div style="margin-bottom: 16px;">
-        <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #991b1b;">敗因タグ</label>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; border: 1px solid #fca5a5; padding: 12px; border-radius: 4px; background-color: #fef2f2;">
-          <%= f.collection_check_boxes :defeat_tag_ids, DefeatTag.all, :id, :name do |b| %>
-            <label style="display: inline-flex; align-items: center; gap: 4px; background: #fff; padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; font-size: 12px; cursor: pointer;">
-              <%= b.check_box %>
-              <span><%= b.text %></span>
-            </label>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <label style="font-weight: bold; font-size: 14px; color: #991b1b; margin: 0;">敗因タグ（該当するものを選択）</label>
+          <%= button_tag "チェックしたタグを削除", type: "button", id: "delete_selected_tags_btn", style: "background-color: #ef4444; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer;" %>
+        </div>
+
+        <% 
+          categories = {
+            "立ち回り" => ["対空が出なかった", "立ち回りでの置き技に引っかかった", "飛び（ジャンプ攻撃）が通らなかった", "前ステ（前ステップ）を通された", "弾打ちのタイミングを読まれた", "対空・牽制の意識配分ミス"],
+            "攻撃・コンボ・起き攻め" => ["コンボミス", "中足ラッシュを通された", "確反（確定反撃）の取り逃し"],
+            "防御・切り返し" => ["インパクトが返せなかった", "無敵技のぶっぱなしに対応できなかった", "画面端から脱出できなかった", "投げ抜け（グラップ）を読まれた（シミー）", "起き攻め（セットプレイ）の拒否失敗", "コマ投げ（コマンド投げ）の読み負け"],
+            "リソース・判断" => ["ドライブゲージ管理ミス（バーンアウト）", "相手のSA（スーパーアーツ）の警戒不足", "リーサル判断（削り切り/コンボ選択）のミス"]
+          }
+
+          user_tags = DefeatTag.where(user_id: [nil, 1, current_user.id]).to_a.uniq(&:name)
+        %>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <% categories.each do |category_name, default_tag_names| %>
+            <details style="border: 1px solid #fca5a5; border-radius: 6px; background-color: #fff; overflow: hidden;" open>
+              <summary style="padding: 10px 12px; background-color: #fef2f2; color: #991b1b; font-weight: bold; font-size: 13px; cursor: pointer; user-select: none;">
+                ▶ <%= category_name %>
+              </summary>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; background-color: #fff;">
+                <% 
+                  category_tags = user_tags.select { |t| t.category == category_name || (t.category.blank? && default_tag_names.include?(t.name)) }
+                %>
+                <% if category_tags.any? %>
+                  <% category_tags.each do |tag| %>
+                    <label style="display: inline-flex; align-items: center; gap: 4px; background: #fff5f5; padding: 6px 10px; border-radius: 4px; border: 1px solid #fca5a5; font-size: 12px; cursor: pointer;">
+                      <%= check_box_tag "match_log[defeat_tag_ids][]", tag.id, @match_log.defeat_tag_ids.include?(tag.id), class: "defeat-tag-checkbox", data: { tag_id: tag.id } %>
+                      <span><%= tag.name %></span>
+                    </label>
+                  <% end %>
+                <% else %>
+                  <p class="no-tag-msg" style="font-size: 12px; color: #9ca3af; margin: 0;">タグはありません</p>
+                <% end %>
+              </div>
+            </details>
           <% end %>
+
+          <!-- ➕ 一覧にない新しいタグをその場で追加する入力欄 ＆ 【追加】ボタン -->
+          <div style="margin-top: 8px; padding: 12px; background-color: #f8fafc; border: 1px dashed #94a3b8; border-radius: 6px;">
+            <label style="display: block; font-weight: bold; font-size: 12px; color: #475569; margin-bottom: 4px;">
+              ➕ リストにない「新しい敗因タグ」を作成して追加
+            </label>
+            <%= text_field_tag :new_tag_name_input, nil, placeholder: "例：対空意識過剰、前ステ補填 など", id: "new_tag_name_input", style: "width: 100%; padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; box-sizing: border-box; margin-bottom: 8px;" %>
+            
+            <label style="display: block; font-weight: bold; font-size: 12px; color: #475569; margin-bottom: 4px;">
+              📁 どのカテゴリーに配置するか選択
+            </label>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <%= select_tag :new_tag_category_select, options_for_select(categories.keys), id: "new_tag_category_select", style: "flex: 1; padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; background-color: #fff; box-sizing: border-box;" %>
+              <!-- 💡 追加ボタン -->
+              <button type="button" id="add_new_tag_btn" style="background-color: #2563eb; color: white; border: none; padding: 7px 16px; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; white-space: nowrap;">追加</button>
+            </div>
+            <p style="margin: 6px 0 0; font-size: 11px; color: #64748b;">※「追加」を押すと、上のカテゴリー枠にすぐ入り、続けて新しいタグを作れます。</p>
+          </div>
         </div>
       </div>
 
@@ -89,8 +146,123 @@
     toggle();
   }
 
-  // Turbo画面遷移と通常のページロードの両方に対応
-  document.addEventListener("turbo:load", setupToggleFields);
-  document.addEventListener("DOMContentLoaded", setupToggleFields);
+  function setupTagDelete() {
+    const deleteBtn = document.getElementById("delete_selected_tags_btn");
+    if (!deleteBtn) return;
+
+    deleteBtn.onclick = function() {
+      const checkedBoxes = document.querySelectorAll(".defeat-tag-checkbox:checked");
+      if (checkedBoxes.length === 0) {
+        alert("削除するタグをチェックしてください。");
+        return;
+      }
+
+      if (!confirm("チェックしたタグを完全に削除しますか？")) {
+        return;
+      }
+
+      const tagIds = Array.from(checkedBoxes).map(cb => cb.dataset.tagId);
+
+      fetch("/defeat_tags/destroy_multiple", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ tag_ids: tagIds })
+      }).then(response => {
+        if (response.ok) {
+          window.location.reload();
+        } else {
+          alert("削除に失敗しました。");
+        }
+      });
+    };
+  }
+
+  function setupQuickTagAdd() {
+    const addBtn = document.getElementById("add_new_tag_btn");
+    if (!addBtn) return;
+
+    addBtn.onclick = function() {
+      const nameInput = document.getElementById("new_tag_name_input");
+      const categorySelect = document.getElementById("new_tag_category_select");
+      
+      const tagName = nameInput.value.trim();
+      const category = categorySelect.value;
+
+      if (!tagName) {
+        alert("タグ名を入力してください。");
+        return;
+      }
+
+      fetch("/defeat_tags/create_tag", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ new_tag_name: tagName, new_tag_category: category })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          const tag = data.tag;
+          const containers = document.querySelectorAll("details summary");
+          let targetContainer = null;
+          containers.forEach(sum => {
+            if (sum.textContent.includes(category)) {
+              targetContainer = sum.nextElementSibling;
+            }
+          });
+
+          if (targetContainer) {
+            const noTagMsg = targetContainer.querySelector(".no-tag-msg");
+            if (noTagMsg) noTagMsg.remove();
+
+            const label = document.createElement("label");
+            label.style.cssText = "display: inline-flex; align-items: center; gap: 4px; background: #fff5f5; padding: 6px 10px; border-radius: 4px; border: 1px solid #fca5a5; font-size: 12px; cursor: pointer;";
+            
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.name = "match_log[defeat_tag_ids][]";
+            checkbox.value = tag.id;
+            checkbox.checked = true;
+            checkbox.className = "defeat-tag-checkbox";
+            checkbox.dataset.tagId = tag.id;
+
+            const span = document.createElement("span");
+            span.textContent = tag.name;
+
+            label.appendChild(checkbox);
+            label.appendChild(span);
+            targetContainer.appendChild(label);
+          }
+
+          nameInput.value = "";
+          nameInput.focus();
+        } else {
+          alert("タグの追加に失敗しました: " + (data.message || ""));
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("通信エラーが発生しました。");
+      });
+    };
+  }
+
+  document.addEventListener("turbo:load", () => {
+    setupToggleFields();
+    setupTagDelete();
+    setupQuickTagAdd();
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    setupToggleFields();
+    setupTagDelete();
+    setupQuickTagAdd();
+  });
   setupToggleFields();
+  setupTagDelete();
+  setupQuickTagAdd();
 </script>

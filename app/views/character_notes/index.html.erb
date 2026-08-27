@@ -1,56 +1,75 @@
-<div style="max-width: 800px; margin: 0 auto; padding: 20px;">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-    <h1 style="font-size: 24px; font-weight: bold; margin: 0;">【格ゲー練習ノート】</h1>
-    <div style="display: flex; gap: 12px;">
-      <%= link_to "新規メモ作成", new_character_note_path, style: "background-color: #2563eb; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: bold;" %>
-      <%= link_to "10秒反省", new_match_log_path, style: "background-color: #dc2626; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: bold;" %>
+<div style="max-width: 800px; margin: 0 auto; padding: 16px; box-sizing: border-box;">
+  
+  <!-- ヘッダー（タイトル ＆ アクションボタン） -->
+  <div style="display: flex; flex-direction: column; sm-flex-direction: row; justify-content: space-between; align-items: flex-start; sm-align-items: center; gap: 12px; margin-bottom: 24px;">
+    <h1 style="font-size: 22px; font-weight: bold; margin: 0; line-height: 1.4;">【格ゲー練習ノート】</h1>
+    <div style="display: flex; gap: 8px; width: 100%; sm-width: auto; flex-wrap: wrap;">
+      <%= link_to "新規メモ作成", new_character_note_path, style: "flex: 1; sm-flex: none; text-align: center; background-color: #2563eb; color: white; padding: 10px 14px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: bold;" %>
+      <%= link_to "10秒反省", new_match_log_path, style: "flex: 1; sm-flex: none; text-align: center; background-color: #dc2626; color: white; padding: 10px 14px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: bold;" %>
     </div>
   </div>
 
   <!-- 絞り込み検索 -->
   <div style="background-color: #f9fafb; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb; margin-bottom: 24px;">
     <%= form_with url: character_notes_path, method: :get, local: true do |f| %>
-      <div style="display: flex; gap: 8px; align-items: center;">
-        <span style="font-weight: bold; font-size: 14px;">相手キャラで絞り込み:</span>
-        <%= f.text_field :search_opponent, value: params[:search_opponent], placeholder: "例：ルーク", style: "padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" %>
-        <%= f.submit "検索", style: "background-color: #4b5563; color: white; padding: 6px 16px; border-radius: 4px; border: none; cursor: pointer;" %>
+      <div style="display: flex; flex-direction: column; sm-flex-direction: row; gap: 8px; align-items: stretch; sm-align-items: center;">
+        <span style="font-weight: bold; font-size: 14px; white-space: nowrap;">相手キャラで絞り込み:</span>
+        <%= f.text_field :search_opponent, value: params[:search_opponent], placeholder: "例：ルーク", style: "flex: 1; padding: 10px 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px;" %>
+        <%= f.submit "検索", style: "background-color: #4b5563; color: white; padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer; font-weight: bold; font-size: 14px;" %>
       </div>
     <% end %>
   </div>
 
-  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">対戦履歴</h2>
+  <h2 style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">対戦履歴</h2>
 
   <div style="display: flex; flex-direction: column; gap: 16px;">
     <% @match_logs.each do |log| %>
       <div style="background-color: #fff; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb; border-left: 6px solid <%= log.result == 'WIN' ? '#2563eb' : '#dc2626' %>;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <div>
+        
+        <!-- カードヘッダー（勝敗・対戦カード・日時 ＆ 詳細・削除） -->
+        <div style="display: flex; flex-direction: column; sm-flex-direction: row; justify-content: space-between; align-items: flex-start; sm-align-items: center; gap: 8px; margin-bottom: 10px;">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px;">
             <span style="font-weight: bold; color: <%= log.result == 'WIN' ? '#2563eb' : '#dc2626' %>; font-size: 16px;"><%= log.result %></span>
-            <span style="font-weight: bold; font-size: 15px; margin-left: 8px;">(自分) <%= log.my_character %> vs (相手) <%= log.opponent_character %></span>
-            <span style="color: #6b7280; font-size: 12px; margin-left: 8px;"><%= log.created_at.strftime("%Y/%m/%d %H:%M") %></span>
+            <span style="font-weight: bold; font-size: 14px;">(自分) <%= log.my_character %> vs (相手) <%= log.opponent_character %></span>
+            <span style="color: #6b7280; font-size: 12px;"><%= log.created_at.strftime("%Y/%m/%d %H:%M") %></span>
           </div>
-          <div style="display: flex; gap: 8px;">
+          <div style="display: flex; gap: 12px; align-self: flex-end; sm-align-self: auto;">
             <%= link_to "詳細", match_log_path(log), style: "font-size: 13px; color: #2563eb; text-decoration: underline;" %>
             <%= button_to "削除", match_log_path(log), method: :delete, data: { confirm: "本当に削除しますか？" }, style: "font-size: 13px; color: #dc2626; background: none; border: none; cursor: pointer; padding: 0;" %>
           </div>
         </div>
 
         <% if log.result == 'WIN' && log.win_reason.present? %>
-          <p style="margin: 4px 0 0; font-size: 14px; color: #1e40af;"><strong>【勝因メモ】</strong> <%= log.win_reason %></p>
+          <p style="margin: 4px 0 0; font-size: 14px; color: #1e40af;"><strong>【勝因】</strong> <%= log.win_reason %></p>
         <% elsif log.result == 'LOSE' %>
+          <!-- 敗因タグの表示 -->
           <% if log.defeat_tags.any? %>
             <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px;">
               <% log.defeat_tags.each do |tag| %>
-                <span style="background-color: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;"><%= tag.name %></span>
+                <span style="background-color: #fee2e2; color: #991b1b; padding: 3px 8px; border-radius: 4px; font-size: 12px;">
+                  <%= tag.name %>
+                </span>
               <% end %>
             </div>
           <% end %>
-          <% if log.defeat_reason.present? %>
-            <p style="margin: 6px 0 0; font-size: 14px; color: #991b1b;"><strong>【敗因メモ】</strong> <%= log.defeat_reason %></p>
-          <% end %>
+
+          <!-- 敗因メモ & 改善案の表示（スマホでは縦並び、PCでは横並び） -->
+          <div style="display: flex; flex-direction: column; sm-flex-direction: row; gap: 8px; margin-top: 10px; font-size: 13px;">
+            <% if log.defeat_reason.present? %>
+              <div style="flex: 1; background: #fef2f2; padding: 8px 12px; border-radius: 4px; color: #991b1b; line-height: 1.4;">
+                <strong>【敗因】</strong> <%= log.defeat_reason %>
+              </div>
+            <% end %>
+
+            <% if log.memo.present? %>
+              <div style="flex: 1; background: #f0f9ff; padding: 8px 12px; border-radius: 4px; color: #1e40af; line-height: 1.4;">
+                <strong>【改善案】</strong> <%= log.memo %>
+              </div>
+            <% end %>
+          </div>
         <% end %>
 
-        <div style="margin-top: 10px; text-align: right;">
+        <div style="margin-top: 12px; text-align: right;">
           <%= link_to "このキャラの対策・反省メモを開く →", redirect_by_opponent_character_notes_path(opponent_character: log.opponent_character), style: "font-size: 13px; color: #4f46e5; font-weight: bold; text-decoration: underline;" %>
         </div>
       </div>
