@@ -17,7 +17,30 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body style="margin: 0; font-family: sans-serif; background-color: #f3f4f6; color: #1f2937;">
+    
+    <%# 共通ヘッダーバー（ログイン中ユーザー ＆ ログアウトボタン） %>
+    <% if user_signed_in? %>
+      <header style="background-color: #ffffff; border-bottom: 1px solid #e5e7eb; padding: 12px 16px; display: flex; flex-direction: column; sm-flex-direction: row; justify-content: space-between; align-items: center; gap: 8px; box-sizing: border-box;">
+        <div style="font-size: 13px; color: #4b5563; word-break: break-all;">
+          ログイン中: <span style="font-weight: bold; color: #1f2937;"><%= current_user.email %></span>
+        </div>
+        <div>
+          <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, style: "display: inline-block; background-color: #f3f4f6; color: #dc2626; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold; border: 1px solid #d1d5db;" %>
+        </div>
+      </header>
+    <% end %>
+
+    <%# フラッシュメッセージ（ログイン成功・失敗などの通知） %>
+    <div style="max-width: 800px; margin: 0 auto; padding: 0 16px;">
+      <% if notice %>
+        <p style="background-color: #d1fae5; color: #065f46; padding: 10px 14px; border-radius: 6px; margin-top: 12px; font-size: 14px; font-weight: bold;"><%= notice %></p>
+      <% end %>
+      <% if alert %>
+        <p style="background-color: #fee2e2; color: #991b1b; padding: 10px 14px; border-radius: 6px; margin-top: 12px; font-size: 14px; font-weight: bold;"><%= alert %></p>
+      <% end %>
+    </div>
+
     <%= yield %>
   </body>
 </html>

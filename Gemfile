@@ -56,3 +56,4 @@ group :test do
   gem "selenium-webdriver"
 end
 gem "minitest", "< 6.0"
+gem 'devise'

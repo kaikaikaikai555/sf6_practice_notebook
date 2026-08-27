@@ -3,7 +3,7 @@
     <%= link_to "← ホームに戻る", character_notes_path, style: "color: #2563eb; text-decoration: underline; font-size: 14px;" %>
   </div>
 
-  <h1 style="font-size: 26px; font-weight: bold; margin-bottom: 20px;">vs <%= @character_note.opponent_character %> (使用: <%= @character_note.my_character %>)</h1>
+  <h1 style="font-size: 26px; font-weight: bold; margin-bottom: 20px;">vs <%= @character_note.opponent_character || @character_note.try(:character_name) || @character_note.try(:name) %> (使用: <%= @character_note.try(:my_character) %>)</h1>
 
   <!-- 対戦直前チェック（10秒要点） -->
   <div style="background-color: #fff; padding: 20px; border-radius: 8px; border: 1px solid #e5e7eb; margin-bottom: 24px;">
@@ -13,23 +13,25 @@
 
     <div style="margin-bottom: 12px;">
       <span style="font-weight: bold; color: #dc2626; font-size: 14px; display: block; margin-bottom: 4px;">最重要ポイント</span>
-      <p style="margin: 0; background: #fef2f2; padding: 8px 12px; border-radius: 4px; border-left: 4px solid #dc2626; font-size: 14px;"><%= @character_note.key_point.presence || "未入力" %></p>
+      <p style="margin: 0; background: #fef2f2; padding: 8px 12px; border-radius: 4px; border-left: 4px solid #dc2626; font-size: 14px;"><%= @character_note.try(:key_point).presence || "未入力" %></p>
     </div>
 
     <div style="margin-bottom: 12px;">
       <span style="font-weight: bold; color: #2563eb; font-size: 14px; display: block; margin-bottom: 4px;">自分の意識・習得したいこと</span>
-      <p style="margin: 0; background: #eff6ff; padding: 8px 12px; border-radius: 4px; border-left: 4px solid #2563eb; font-size: 14px;"><%= (@character_note.try(:my_focus) || @character_note.try(:my_awareness)).presence || "未入力" %></p>
+      <p style="margin: 0; background: #eff6ff; padding: 8px 12px; border-radius: 4px; border-left: 4px solid #2563eb; font-size: 14px;">
+        <%= @character_note.try(:my_focus).presence || "未入力" %>
+      </p>
     </div>
 
     <div style="margin-bottom: 12px;">
       <span style="font-weight: bold; color: #374151; font-size: 14px; display: block; margin-bottom: 4px;">自分の悪癖・よくやるミス</span>
-      <p style="margin: 0; background: #f3f4f6; padding: 8px 12px; border-radius: 4px; border-left: 4px solid #4b5563; font-size: 14px;"><%= @character_note.bad_habit.presence || "未入力" %></p>
+      <p style="margin: 0; background: #f3f4f6; padding: 8px 12px; border-radius: 4px; border-left: 4px solid #4b5563; font-size: 14px;"><%= @character_note.try(:bad_habit).presence || "未入力" %></p>
     </div>
 
-    <% if @character_note.try(:content).present? || @character_note.try(:detail_memo).present? %>
+    <% if @character_note.try(:content).present? %>
       <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #eee;">
         <span style="font-weight: bold; font-size: 14px; display: block; margin-bottom: 4px;">詳細メモ</span>
-        <p style="margin: 0; font-size: 14px; white-space: pre-wrap; color: #4b5563;"><%= @character_note.try(:content) || @character_note.try(:detail_memo) %></p>
+        <p style="margin: 0; font-size: 14px; white-space: pre-wrap; color: #4b5563;"><%= @character_note.content %></p>
       </div>
     <% end %>
 
@@ -41,18 +43,31 @@
   <!-- 敗因傾向の分析セクション -->
   <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
     <h2 style="font-size: 16px; font-weight: bold; color: #991b1b; margin: 0 0 12px; display: flex; align-items: center; gap: 8px;">
-      📊 敗因傾向分析 (vs <%= @character_note.opponent_character %>)
+      📊 敗因傾向分析 (vs <%= @character_note.opponent_character || @character_note.try(:character_name) || @character_note.try(:name) %>)
     </h2>
 
-    <% if @defeat_tag_counts.present? %>
-      <% max_count = @defeat_tag_counts.first.tag_count %>
+    <% 
+      # 負け試合からタグの出現数をリアルタイム集計
+      tag_counts = Hash.new(0)
+      if @match_logs.present?
+        @match_logs.select { |log| log.result == 'LOSE' }.each do |log|
+          log.defeat_tags.each do |tag|
+            tag_counts[tag.name] += 1
+          end
+        end
+      end
+      sorted_tags = tag_counts.sort_by { |_, count| -count }
+      max_count = sorted_tags.first&.last.to_i
+    %>
+
+    <% if sorted_tags.present? %>
       <div style="display: flex; flex-direction: column; gap: 10px;">
-        <% @defeat_tag_counts.each do |tag| %>
-          <% percentage = (tag.tag_count.to_f / max_count * 100).round %>
+        <% sorted_tags.each do |tag_name, count| %>
+          <% percentage = max_count > 0 ? (count.to_f / max_count * 100).round : 0 %>
           <div>
             <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: bold; margin-bottom: 4px;">
-              <span style="color: #374151;"><%= tag.name %></span>
-              <span style="color: #991b1b;"><%= tag.tag_count %>回</span>
+              <span style="color: #374151;"><%= tag_name %></span>
+              <span style="color: #991b1b;"><%= count %>回</span>
             </div>
             <!-- 簡易グラフバー -->
             <div style="background-color: #f3f4f6; border-radius: 4px; height: 10px; width: 100%; overflow: hidden;">
@@ -67,44 +82,48 @@
   </div>
 
   <!-- このキャラに対する対戦履歴 -->
-  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">対戦履歴 (vs <%= @character_note.opponent_character %>)</h2>
+  <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">対戦履歴 (vs <%= @character_note.opponent_character || @character_note.try(:character_name) || @character_note.try(:name) %>)</h2>
   
   <div style="display: flex; flex-direction: column; gap: 12px;">
-    <% @match_logs.each do |log| %>
-      <div style="background-color: #fff; padding: 14px; border-radius: 6px; border: 1px solid #e5e7eb; border-left: 4px solid <%= log.result == 'WIN' ? '#2563eb' : '#dc2626' %>;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <span style="font-weight: bold; color: <%= log.result == 'WIN' ? '#2563eb' : '#dc2626' %>;"><%= log.result %></span>
-            <span style="color: #6b7280; font-size: 12px; margin-left: 8px;"><%= log.created_at.strftime("%Y/%m/%d %H:%M") %></span>
+    <% if @match_logs.present? %>
+      <% @match_logs.each do |log| %>
+        <div style="background-color: #fff; padding: 14px; border-radius: 6px; border: 1px solid #e5e7eb; border-left: 4px solid <%= log.result == 'WIN' ? '#2563eb' : '#dc2626' %>;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-weight: bold; color: <%= log.result == 'WIN' ? '#2563eb' : '#dc2626' %>;"><%= log.result %></span>
+              <span style="color: #6b7280; font-size: 12px; margin-left: 8px;"><%= log.created_at.strftime("%Y/%m/%d %H:%M") %></span>
+            </div>
+            <%= link_to "詳細", match_log_path(log), style: "font-size: 12px; color: #2563eb; text-decoration: underline;" %>
           </div>
-          <%= link_to "詳細", match_log_path(log), style: "font-size: 12px; color: #2563eb; text-decoration: underline;" %>
-        </div>
-        <!-- 敗因タグの表示 -->
-        <% if log.defeat_tags.any? %>
-          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
-            <% log.defeat_tags.each do |tag| %>
-              <span style="background-color: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">
-                <%= tag.name %>
-              </span>
+          <!-- 敗因タグの表示 -->
+          <% if log.defeat_tags.any? %>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;">
+              <% log.defeat_tags.each do |tag| %>
+                <span style="background-color: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">
+                  <%= tag.name %>
+                </span>
+              <% end %>
+            </div>
+          <% end %>
+
+          <!-- 敗因メモ & 改善案の表示エリア（左右に並べる） -->
+          <div style="display: flex; gap: 12px; margin-top: 8px; font-size: 13px;">
+            <% if log.try(:defeat_reason).present? %>
+              <div style="flex: 1; background: #fef2f2; padding: 8px 12px; border-radius: 4px; color: #991b1b;">
+                <strong>【敗因】</strong> <%= log.defeat_reason %>
+              </div>
+            <% end %>
+
+            <% if log.try(:memo).present? %>
+              <div style="flex: 1; background: #f0f9ff; padding: 8px 12px; border-radius: 4px; color: #1e40af;">
+                <strong>【改善案】</strong> <%= log.memo %>
+              </div>
             <% end %>
           </div>
-        <% end %>
-
-        <!-- 敗因メモ & 改善案の表示エリア（左右に並べる） -->
-        <div style="display: flex; gap: 12px; margin-top: 8px; font-size: 13px;">
-          <% if log.defeat_reason.present? %>
-            <div style="flex: 1; background: #fef2f2; padding: 8px 12px; border-radius: 4px; color: #991b1b;">
-              <strong>【敗因】</strong> <%= log.defeat_reason %>
-            </div>
-          <% end %>
-
-          <% if log.memo.present? %>
-            <div style="flex: 1; background: #f0f9ff; padding: 8px 12px; border-radius: 4px; color: #1e40af;">
-              <strong>【改善案】</strong> <%= log.memo %>
-            </div>
-          <% end %>
         </div>
-      </div>
+      <% end %>
+    <% else %>
+      <p style="color: #6b7280; font-size: 14px;">対戦履歴はまだありません。</p>
     <% end %>
   </div>
 </div>

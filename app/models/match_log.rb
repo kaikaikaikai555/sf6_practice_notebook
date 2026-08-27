@@ -1,6 +1,6 @@
 class MatchLog < ApplicationRecord
   belongs_to :user
-  belongs_to :character_note, optional: true
-  has_many :match_log_defeat_tags, dependent: :destroy
-  has_many :defeat_tags, through: :match_log_defeat_tags
+  has_and_belongs_to_many :defeat_tags
+  validates :my_character, presence: { message: "を入力してください" }
+  validates :opponent_character, presence: { message: "を入力してください" }
 end

@@ -1,31 +1,64 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
+ja:
+  errors:
+    messages:
+      already_confirmed: "は既に登録済みです。ログインしてください。"
+      confirmation_period_expired: "の期限が切れました。%{period} 以内に再確認する必要があります。"
+      expired: "の期限が切れました。新しくリクエストしてください。"
+      not_found: "は見つかりませんでした。"
+      not_locked: "は凍結されていません。"
+      not_saved:
+        one: "エラーが発生したため %{resource} は保存されませんでした:"
+        other: "%{count} 件のエラーが発生したため %{resource} は保存されませんでした:"
 
-en:
-  hello: "Hello world"
+  devise:
+    confirmations:
+      confirmed: "アカウントを有効化しました。"
+      send_instructions: "アカウントの有効化方法を説明したメールを数分以内に送信します。"
+      send_paranoid_instructions: "あなたのメールアドレスが登録されている場合、アカウントを有効化するためのメールが数分以内に送信されます。"
+    failure:
+      already_authenticated: "すでにログインしています。"
+      inactive: "アカウントが有効化されていません。"
+      invalid: "%{authentication_keys}またはパスワードが違います。"
+      locked: "あなたのアカウントは凍結されています。"
+      last_attempt: "あなたのアカウントが凍結される前に、もう1回誤入力が可能です。"
+      not_found_in_database: "%{authentication_keys}またはパスワードが違います。"
+      timeout: "セッションの有効期限が切れました。もう一度ログインしてください。"
+      unauthenticated: "アカウント登録またはログインが必要です。"
+      unconfirmed: "メールアドレスの確認が必要です。"
+    mailer:
+      confirmation_instructions:
+        subject: "アカウントの有効化について"
+      reset_password_instructions:
+        subject: "パスワードの再設定について"
+      unlock_instructions:
+        subject: "アカウントの凍結解除について"
+      email_changed:
+        subject: "メールアドレスの変更について"
+      password_change:
+        subject: "パスワードの変更について"
+    omniauth_callbacks:
+      failure: "%{kind} アカウントによる認証に失敗しました。理由：\"%{reason}\""
+      success: "%{kind} アカウントによる認証に成功しました。"
+    passwords:
+      no_token: "このページにはアクセスできません。パスワード再設定メールのリンクからアクセスしてください。"
+      send_instructions: "パスワードの再設定方法を説明したメールを数分以内に送信します。"
+      send_paranoid_instructions: "あなたのメールアドレスが登録されている場合、パスワード再設定用のリンクを記載したメールが数分以内に送信されます。"
+      updated: "パスワードが正しく変更されました。ログイン状態になっています。"
+      updated_not_active: "パスワードが正しく変更されました。"
+    registrations:
+      destroyed: "アカウントを削除しました。またのご利用をお待ちしております。"
+      signed_up: "アカウント登録が完了しました。"
+      signed_up_but_inactive: "アカウントは登録されていますが、有効化されていないためログインできません。"
+      signed_up_but_locked: "アカウントは登録されていますが、凍結されているためログインできません。"
+      signed_up_but_unconfirmed: "確認メールを送信しました。メール内のリンクを開いてアカウントを有効化してください。"
+      update_needs_confirmation: "アカウント情報を変更しました。新しいメールアドレスの確認が必要ですので、届いたメールを確認してください。"
+      updated: "アカウント情報を変更しました。"
+      updated_but_not_signed_in: "アカウント情報を変更しましたが、パスワードが変更されたため再ログインが必要です。"
+    sessions:
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
+      already_signed_out: "既にログアウト済みです。"
+    unlocks:
+      send_instructions: "アカウントの凍結解除方法を説明したメールを数分以内に送信します。"
+      send_paranoid_instructions: "アカウントが存在する場合、アカウントの凍結解除方法を説明したメールを数分以内に送信します。"
+      unlocked: "アカウントの凍結が解除されました。ログインして続けてください。"

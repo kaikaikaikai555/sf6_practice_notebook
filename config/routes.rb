@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "character_notes#index"
+  devise_for :users
 
   resources :character_notes do
     collection do
@@ -7,5 +7,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :match_logs
+  resources :match_logs, only: [:show, :new, :create, :destroy]
+
+  # 💡 DefeatTagsController を使うように指定
+  resources :defeat_tags, only: [] do
+    collection do
+      delete :destroy_multiple
+      post :create_tag
+    end
+  end
+
+  root "character_notes#index"
 end

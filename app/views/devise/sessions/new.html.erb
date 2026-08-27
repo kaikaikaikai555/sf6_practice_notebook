@@ -1,0 +1,84 @@
+<div style="max-width: 900px; margin: 20px auto; padding: 15px; box-sizing: border-box;">
+  
+  <!-- 上部：アプリの紹介・メリット・タイトルセクション -->
+  <div style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; padding: 24px 16px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center;">
+    
+    <!-- 決定した最強のアプリ名タイトル -->
+    <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 10px; line-height: 1.4; word-break: break-all;">
+      スト6対戦反省・キャラ対策ノート<br><span style="font-size: 13px; font-weight: normal; opacity: 0.9;">（SF6 Practice Notebook）</span>
+    </h1>
+    
+    <p style="font-size: 13px; margin-bottom: 20px; opacity: 0.95; line-height: 1.5;">
+      ストリートファイター6の対戦データを蓄積・分析し、自己の課題を明確にするための格ゲー特化型練習ノートです。
+    </p>
+
+    <!-- 主な機能とメリットのカード群 -->
+    <div style="display: flex; flex-direction: column; gap: 12px; text-align: left; margin-top: 15px;">
+      <div style="background: rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 8px; backdrop-filter: blur(4px);">
+        <h3 style="font-size: 14px; font-weight: bold; margin-bottom: 6px; color: #93c5fd;">⚡ 主な機能</h3>
+        <ul style="margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.5; opacity: 0.95;">
+          <li>10秒反省機能で手軽に反省</li>
+          <li>敗因タグによる敗因傾向分析</li>
+          <li>キャラクター別対策メモ管理</li>
+          <li>相手キャラごとの対戦成績フィルタリング</li>
+        </ul>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.1); padding: 14px; border-radius: 8px; backdrop-filter: blur(4px);">
+        <h3 style="font-size: 14px; font-weight: bold; margin-bottom: 6px; color: #93c5fd;">💡 活用するメリット</h3>
+        <p style="margin: 0; font-size: 12px; line-height: 1.5; opacity: 0.95;">
+          「なんとなく負けた試合」をデータとして可視化し、自身の癖や弱点を客観的に把握することで、効率的なランクアップが可能
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 下部：実際のログインフォームボックス -->
+  <div style="max-width: 440px; margin: 0 auto; background-color: #fff; padding: 24px; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+    
+    <h2 style="font-size: 18px; font-weight: bold; margin-bottom: 18px; color: #1f2937; text-align: center;">ログインして始める</h2>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div style="margin-bottom: 14px;">
+        <%= f.label :email, "メールアドレス", style: "display: block; font-size: 13px; font-weight: bold; color: #374151; margin-bottom: 4px;" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", style: "width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; font-size: 14px;" %>
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        <%= f.label :password, "パスワード", style: "display: block; font-size: 13px; font-weight: bold; color: #374151; margin-bottom: 4px;" %>
+        <%= f.password_field :password, autocomplete: "current-password", style: "width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; box-sizing: border-box; font-size: 14px;" %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px;">
+          <%= f.check_box :remember_me, style: "width: 16px; height: 16px; cursor: pointer;" %>
+          <%= f.label :remember_me, "ログイン状態を保持する", style: "font-size: 13px; color: #4b5563; cursor: pointer;" %>
+        </div>
+      <% end %>
+
+      <div style="margin-bottom: 18px;">
+        <%= f.submit "ログイン", style: "width: 100%; background-color: #2563eb; color: white; padding: 12px; border-radius: 6px; border: none; font-size: 14px; font-weight: bold; cursor: pointer; text-align: center;" %>
+      </div>
+    <% end %>
+
+    <!-- 各種リンク -->
+    <div style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #e5e7eb; padding-top: 16px; margin-top: 8px;">
+      <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+        <%= link_to "アカウント登録（新規登録）", new_registration_path(resource_name), style: "display: block; text-align: center; background-color: #f3f4f6; color: #374151; padding: 10px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold;" %>
+      <% end %>
+
+      <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+        <%= link_to "パスワードをお忘れですか？", new_password_path(resource_name), style: "display: block; text-align: center; color: #4b5563; padding: 6px; text-decoration: none; font-size: 12px;" %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- 開発者表記 ＆ ゴブリンイラストエリア -->
+  <div style="text-align: center; margin-top: 30px; padding: 16px; color: #6b7280; font-size: 13px; border-top: 1px dashed #d1d5db;">
+    <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; letter-spacing: 1px;">
+      <span>Developed by ssmtksG</span>
+      <%= image_tag "SSM.jpg", alt: "ゴブリン", style: "width: 30px; height: 30px; object-fit: contain; vertical-align: middle; border-radius: 4px;" %>
+    </div>
+  </div>
+
+</div>

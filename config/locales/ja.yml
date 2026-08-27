@@ -1,0 +1,23 @@
+ja:
+  activerecord:
+    models:
+      user: "ユーザー"
+      match_log: "対戦ログ"
+      character_note: "キャラクターノート"
+    attributes:
+      user:
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認用）"
+      match_log:
+        my_character: "自分の使用キャラ"
+        opponent_character: "対戦相手のキャラ"
+      character_note:
+        my_character: "自分の使用キャラ"
+        opponent_character: "対戦相手のキャラ"
+    errors:
+      messages:
+        blank: "を入力してください"
+        taken: "はすでに存在します"
+        too_short: "は6文字以上で入力してください"
+        confirmation: "がパスワードと一致しません"
