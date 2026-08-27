@@ -1,24 +1,41 @@
-# README
+#  SF6 Practice Notebook（スト6対戦反省・キャラ対策ノート）
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+ストリートファイター6（SF6）の対戦データを素早く記録し、自分の敗因傾向やキャラクター別の対策を効率的に管理・分析するためのWebアプリケーションです。
 
-Things you may want to cover:
+---
 
-* Ruby version
+##  使用技術・開発環境（Tech Stack）
 
-* System dependencies
+- **バックエンド**: Ruby 3.2.x / Ruby on Rails 7.x
+- **フロントエンド**: JavaScript (Importmap), HTML5, CSS3
+- **データベース**: SQLite (開発環境) / PostgreSQL (本番想定)
+- **認証機能**: Devise（ユーザー登録・ログイン機能）
+- **インフラ・環境**: Docker / Dockerfile, WSL (Ubuntu-24.04)
+- **コード品質・セキュリティ**: 
+  - RuboCop（コードの自動整形・規約チェック）
+  - Brakeman（セキュリティ脆弱性の自動スキャン）
+- **バージョン管理・CI**: Git, GitHub Actions (CI / Dependabot)
 
-* Configuration
+---
 
-* Database creation
+##  主な機能
 
-* Database initialization
+1. **10秒反省・対戦ログ記録**
+   - 試合直後に素早く「どのキャラに」「どう負けたか」をサクッと記録できます。
+2. **敗因タグ・集計機能**
+   - 敗因（例: 「対空漏れ」「インパクト」「投げ抜けミス」など）にタグを付与し、自分の弱点を一目で集計・把握できます。
+3. **キャラクター別対策メモ管理**
+   - キャラクターごとの対策ノートを作成・編集し、対戦成績のフィルタリングや詳細な振り返りを行えます。
+4. **ユーザー認証機能 (Devise)**
+   - ユーザーごとのデータ管理を安全に行うためのログイン・アカウント管理機能を実装しています。
+5. **レスポンシブ対応デザイン**
+   - スマホやPCなど、多様なデバイスから快適にアクセス・閲覧できるレイアウトに調整しています。
 
-* How to run the test suite
+---
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+##  開発のプロセス（GitHub運用）
+機能追加やバグ修正ごとにブランチを切り、プルリクエスト（PR）を作成してマージする実務に近い開発フローを意識して実装を進めました。
+- **Phase1**: 初期セットアップとモデル・ルーティングの構築
+- **Phase2**: 10秒確認機能・検索機能・編集機能の実装
+- **Phase3**: 対戦ログの追加と画面リダイレクトの修正
+- **Phase4**: 敗因タグ機能の実装およびログイン画面のデザインブラッシュアップ
