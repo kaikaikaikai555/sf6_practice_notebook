@@ -9,6 +9,13 @@ class User < ApplicationRecord
   # ユーザー作成後にデフォルトの敗因タグを自動生成
   after_create :create_default_defeat_tags
 
+  def self.guest
+    find_or_create_by!(email: 'guest@example.com') do |user|
+      user.password = SecureRandom.urlsafe_base64
+      # user.confirmed_at = Time.current # confirmable を使っている場合はコメントアウトを解除
+    end
+  end
+
   private
 
   def create_default_defeat_tags
@@ -34,7 +41,7 @@ class User < ApplicationRecord
     ]
 
     default_tags.each do |tag_name|
-      defeat_tags.create!(name: tag_name)
+      defeat_tags.find_or_create_by!(name: tag_name)
     end
   end
 end
