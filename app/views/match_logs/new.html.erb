@@ -38,7 +38,7 @@
     <!-- WIN選択時に表示 -->
     <div id="win_fields" style="margin-bottom: 16px; display: none;">
       <%= f.label :win_reason, "勝因メモ", style: "display: block; font-weight: bold; font-size: 14px; margin-bottom: 4px; color: #1e40af;" %>
-      <%= f.text_area :win_reason, placeholder: "例：対空意識が機能した、インパクト返しが刺사った", rows: 4, style: "width: 100%; padding: 8px; border: 1px solid #93c5fd; border-radius: 4px; background-color: #eff6ff; box-sizing: border-box;" %>
+      <%= f.text_area :win_reason, placeholder: "例：対空意識が機能した、インパクト返しが刺さった", rows: 4, style: "width: 100%; padding: 8px; border: 1px solid #93c5fd; border-radius: 4px; background-color: #eff6ff; box-sizing: border-box;" %>
     </div>
 
     <!-- LOSE選択時に表示 -->
@@ -57,7 +57,8 @@
             "リソース・判断" => ["ドライブゲージ管理ミス（バーンアウト）", "相手のSA（スーパーアーツ）の警戒不足", "リーサル判断（削り切り/コンボ選択）のミス"]
           }
 
-          user_tags = DefeatTag.where(user_id: [nil, 1, current_user.id]).to_a.uniq(&:name)
+          # 💡 ログイン中のユーザーのタグだけに限定し、名前が重複するものを完全に排除する
+          user_tags = current_user.defeat_tags.to_a.uniq(&:name)
         %>
 
         <div style="display: flex; flex-direction: column; gap: 8px;">

@@ -5,7 +5,7 @@ class DefeatTagsController < ApplicationController
   def destroy_multiple
     tag_ids = params[:tag_ids]
     if tag_ids.present?
-      DefeatTag.where(id: tag_ids).destroy_all
+      DefeatTag.where(id: tag_ids, user_id: current_user.id).destroy_all
       render json: { status: 'success' }
     else
       render json: { status: 'error' }, status: :bad_request
@@ -21,10 +21,10 @@ class DefeatTagsController < ApplicationController
       return render json: { status: 'error', message: 'タグ名が空です' }, status: :unprocessable_entity
     end
 
-    tag = DefeatTag.find_or_create_by(name: tag_name, user_id: current_user.id) do |t|
-      t.category = category
-    end
-    tag.update(category: category) if tag.category.present? && tag.category != category
+    # ユーザーごとに同じ名前のタグがなければ新規作成し、あれば既存のものを取得する
+    tag = current_user.defeat_tags.find_or_initialize_by(name: tag_name)
+    tag.category = category if category.present?
+    tag.save!
 
     render json: { 
       status: 'success', 

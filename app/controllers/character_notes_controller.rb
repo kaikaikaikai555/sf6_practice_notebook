@@ -21,8 +21,12 @@ class CharacterNotesController < ApplicationController
         note = current_user.character_notes.create(opponent_character: opponent_name)
       end
 
-      # 詳細（show）画面へリダイレクト
-      redirect_to character_note_path(note) and return
+      # 💡 万が一作成に失敗した場合の安全ガードを追加
+      if note.persisted?
+        redirect_to character_note_path(note) and return
+      else
+        flash.now[:alert] = "キャラクターノートの作成に失敗しました。"
+      end
     end
 
     @character_notes = current_user.character_notes
@@ -84,7 +88,11 @@ class CharacterNotesController < ApplicationController
       note = current_user.character_notes.create(opponent_character: opponent_name)
     end
 
-    redirect_to character_note_path(note)
+    if note.persisted?
+      redirect_to character_note_path(note)
+    else
+      redirect_to character_notes_path, alert: "キャラクターノートの作成に失敗しました。"
+    end
   end
 
   private

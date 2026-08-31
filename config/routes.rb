@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: 'users/sessions'
+  }
+
+  devise_scope :user do
+    post 'users/guest_sign_in', to: 'users/sessions#guest_sign_in'
+  end
 
   resources :character_notes do
     collection do
@@ -9,7 +15,6 @@ Rails.application.routes.draw do
 
   resources :match_logs, only: [:show, :new, :create, :destroy]
 
-  # 💡 DefeatTagsController を使うように指定
   resources :defeat_tags, only: [] do
     collection do
       delete :destroy_multiple
