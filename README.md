@@ -22,13 +22,13 @@
 
 | 1. 10秒反省機能（入力フォーム） | 2. 10秒反省の敗因タグ機能 |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/f2730f11-0c8b-4edb-b9e1-9e810330864c" height="200"> | <img src="https://github.com/user-attachments/assets/a1ab09ec-acb4-46b4-8e7d-fc1467655218" width="100%"> |
+| <img src="https://github.com/user-attachments/assets/f2730f11-0c8b-4edb-b9e1-9e810330864c" width="100%"> | <img src="https://github.com/user-attachments/assets/a1ab09ec-acb4-46b4-8e7d-fc1467655218" width="100%"> |
 | 対戦直後に素早く試合結果や反省を記録するための10秒反省機能です。 | 敗因に対してタグを付与・選択することで、自身の弱点を分類できます。 |
 
 | 3. 対戦ログ | 4. 新規メモによるキャラ対策ページ |
 | :---: | :---: |
 | <img src="https://github.com/user-attachments/assets/5f1bc234-e2d9-4030-ab5f-0bec9536b58b" width="100%"> | <img src="https://github.com/user-attachments/assets/98722811-a41a-4cf3-8e35-aec2bd042e1a" width="100%"> |
-| 登録した対戦履歴を一覧で確認し, 日々の戦績の推移を把握できます。 | 対戦相手のキャラクターごとに、新しい対策メモを作成・蓄積できます。 |
+| 登録した対戦履歴を一覧で確認し、日々の戦績の推移を把握できます。 | 対戦相手のキャラクターごとに、新しい対策メモを作成・蓄積できます。 |
 
 | 5. 作成したものが見れる詳細画面 | 6. 詳細を開くと自分の敗因分析が見れる |
 | :---: | :---: |
