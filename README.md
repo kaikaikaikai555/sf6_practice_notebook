@@ -15,33 +15,31 @@
 
 ---
 
+---
+
 ## 📋 機能一覧
 
 | ログイン画面 | トップ画面 |
 | :---: | :---: |
-| ![ログイン画面](https://github.com/user-attachments/assets/81b7fd85-8dba-4827-9a0d-fe6c72181df6>
-) | ![トップ画面](https://github.com/user-attachments/assets/e2d33d34-b785-425b-aeff-6340504d4ae1>
-) |
+| ![ログイン画面](https://github.com/user-attachments/assets/81b7fd85-8dba-4827-9a0d-fe6c72181df6) | ![トップ画面](https://github.com/user-attachments/assets/e2d33d34-b785-425b-aeff-6340504d4ae1) |
 | 登録せずにサービスをお試しいただけるゲストログイン機能などを実装しています。 | アプリのコンセプトや概要をひと目で伝えるトップ画面です。 |
 
 | 1. 10秒反省機能 | 2. 10秒反省の敗因タグ機能 |
 | :---: | :---: |
-| ![10秒反省機能](https://github.com/user-attachments/assets/f2730f11-0c8b-4edb-b9e1-9e810330864c>
-) | ![敗因タグ機能](https://github.com/user-attachments/assets/a1ab09ec-acb4-46b4-8e7d-fc1467655218>
-) |
+| ![10秒反省機能](https://github.com/user-attachments/assets/f2730f11-0c8b-4edb-b9e1-9e810330864c) | ![敗因タグ機能](https://github.com/user-attachments/assets/a1ab09ec-acb4-46b4-8e7d-fc1467655218) |
 | 対戦直後に素早く試合結果や反省を記録するための10秒反省機能を実装しました。 | 敗因に対してタグを付与・選択することで、自身の弱点や負けパターンを明確に分類できます。 |
 
 | 3. 対戦ログ | 4. 新規メモによるキャラ対策ページ |
 | :---: | :---: |
-| ![対戦ログ](ここに画像をドロップしたときに出る文字) | ![キャラ対策ページ](ここに画像をドロップしたときに出る文字) |
+| ![対戦ログ](https://github.com/user-attachments/assets/3番目の画像のURLをここに入れる) | ![キャラ対策ページ](https://github.com/user-attachments/assets/4番目の画像のURLをここに入れる) |
 | 登録した対戦履歴を一覧で確認し、日々の戦績の推移を把握できます。 | 対戦相手のキャラクターごとに、新しい対策メモを作成・蓄積できるページを実装しました。 |
 
 | 5. 作成したものが見れる詳細画面 | 6. 詳細を開くと自分の敗因分析が見れる |
 | :---: | :---: |
-| ![詳細画面](ここに画像をドロップしたときに出る文字) | ![敗因分析画面](ここに画像をドロップしたときに出る文字) |
+| ![詳細画面](https://github.com/user-attachments/assets/5番目の画像のURLをここに入れる) | ![敗因分析画面](https://github.com/user-attachments/assets/6番目の画像のURLをここに入れる) |
 | 登録した対戦ログや対策メモの内容を個別で確認できる詳細画面です。 | 詳細画面を開くことで、自身の敗因の傾向や詳しい分析結果を確認できます。 |
 
 | 7. 反省、対策メモを検索してみる機能 | |
 | :---: | :---: |
-| ![検索機能](ここに画像をドロップしたときに出る文字) | |
+| ![検索機能](https://github.com/user-attachments/assets/7番目の画像のURLをここに入れる) | |
 | キャラクター名やキーワードをもとに、過去の反省や対策メモを素早く検索・絞り込みできる機能を実装しました。 | （※必要に応じて他の機能や補足を追加できます） |
