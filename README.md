@@ -22,7 +22,7 @@
 
 | 1. 10秒反省機能（入力フォーム） | 2. 10秒反省の敗因タグ機能 |
 | :---: | :---: |
-| <img src="https://github.com/user-attachments/assets/f2730f11-0c8b-4edb-b9e1-9e810330864c" width="100%" style="height: 180px; object-fit: cover; object-position: top;"> | <img src="https://github.com/user-attachments/assets/a1ab09ec-acb4-46b4-8e7d-fc1467655218" width="100%"> |
+| <img src="https://github.com/user-attachments/assets/f2730f11-0c8b-4edb-b9e1-9e810330864c" width="100%"> | <img src="https://github.com/user-attachments/assets/a1ab09ec-acb4-46b4-8e7d-fc1467655218" width="100%"> |
 | 対戦直後に素早く試合結果や反省を記録するための10秒反省機能です。 | 敗因に対してタグを付与・選択することで、自身の弱点を分類できます。 |
 
 | 3. 対戦ログ | 4. 新規メモによるキャラ対策ページ |
