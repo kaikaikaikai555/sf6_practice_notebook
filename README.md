@@ -107,3 +107,19 @@ erDiagram
         datetime 作成日 "作成日時"
         datetime 更新日 "更新日時"
     }
+    
+--- 
+
+## 🏗️ システム構成図
+
+```mermaid
+graph TD
+    User["ユーザー (ブラウザ)"] -->|HTTPリクエスト| Rails["Ruby on Rails 7.2<br>(Webアプリ / Devise認証)"]
+    
+    subgraph Docker Container (開発環境)
+        Rails --> DB[(データベース<br>SQLite / PostgreSQL)]
+    end
+
+    style User fill:#f9f,stroke:#333,stroke-width:2px
+    style Rails fill:#bbf,stroke:#333,stroke-width:2px
+    style DB fill:#bfb,stroke:#333,stroke-width:2px
