@@ -43,6 +43,9 @@
 
 ---
 
+## 📊 ER図（データベース設計）
+
+```mermaid
 erDiagram
     Users ||--o{ CharacterNotes : "1対多 (dependent: destroy)"
     Users ||--o{ MatchLogs : "1対多 (dependent: destroy)"
@@ -54,7 +57,7 @@ erDiagram
         string name "ユーザー名"
         string email "メールアドレス"
         string encrypted_password "暗号化パスワード"
-        datetime created_ai "作成日時"
+        datetime created_at "作成日時"
         datetime updated_at "更新日時"
     }
 
