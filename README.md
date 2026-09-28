@@ -117,11 +117,11 @@ erDiagram
 graph TD
     User["ユーザー (ブラウザ)"] -->|HTTPリクエスト| Rails["Ruby on Rails 7.2<br>(Webアプリ / Devise認証)"]
     
-    subgraph Docker Container (開発環境)
+    subgraph container [Docker Container (開発環境)]
         Rails --> DB[(データベース<br>SQLite / PostgreSQL)]
     end
 
     style User fill:#f9f,stroke:#333,stroke-width:2px
     style Rails fill:#bbf,stroke:#333,stroke-width:2px
-    style DB fill:#bfb,stroke:#333,stroke-width:2px
+    style DB fill:#bfb,stroke:#333,stroke-width:2pxroke-width:2px
 ```
