@@ -123,5 +123,5 @@ graph TD
 
     style User fill:#f9f,stroke:#333,stroke-width:2px
     style Rails fill:#bbf,stroke:#333,stroke-width:2px
-    style DB fill:#bfb,stroke:#333,stroke-width:2pxroke-width:2px
+    style DB fill:#bfb,stroke:#333,stroke-width:2px
 ```
