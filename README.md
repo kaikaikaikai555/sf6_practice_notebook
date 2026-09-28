@@ -46,37 +46,37 @@
 
 ```mermaid
 erDiagram
-    User ||--o{ MatchLog : "1対多"
-    User ||--o{ CharacterNote : "1対多"
-    User ||--o{ DefeatTag : "1対多"
-    MatchLog ||--o{ DefeatTag : "1対多（または中間テーブル等）"
+    User ||--o{ MatchLog : "所有する (1対多)"
+    User ||--o{ CharacterNote : "所有する (1対多)"
+    User ||--o{ DefeatTag : "所有する (1対多)"
+    MatchLog ||--o{ DefeatTag : "紐づく (1対多)"
 
     User {
-        bigint id PK
-        string email
-        string encrypted_password
-        datetime created_at
-        datetime updated_at
+        bigint id PK "ユーザーID"
+        string email "メールアドレス"
+        string encrypted_password "暗号化パスワード"
+        datetime created_at "作成日時"
+        datetime updated_at "更新日時"
     }
 
     MatchLog {
-        bigint id PK
-        bigint user_id FK
-        datetime created_at
-        datetime updated_at
+        bigint id PK "対戦ログID"
+        bigint user_id FK "ユーザーID"
+        datetime created_at "作成日時"
+        datetime updated_at "更新日時"
     }
 
     CharacterNote {
-        bigint id PK
-        bigint user_id FK
-        datetime created_at
-        datetime updated_at
+        bigint id PK "対策メモID"
+        bigint user_id FK "ユーザーID"
+        datetime created_at "作成日時"
+        datetime updated_at "更新日時"
     }
 
     DefeatTag {
-        bigint id PK
-        bigint user_id FK
-        bigint match_log_id FK
-        datetime created_at
-        datetime updated_at
+        bigint id PK "タグID"
+        bigint user_id FK "ユーザーID"
+        bigint match_log_id FK "対戦ログID"
+        datetime created_at "作成日時"
+        datetime updated_at "更新日時"
     }
