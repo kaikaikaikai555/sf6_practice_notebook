@@ -26,3 +26,81 @@
 | <img src="https://github.com/user-attachments/assets/51ae8950-423c-4fe6-829d-c0b053909f65" width="100%"><br>登録した対戦ログや対策メモの内容を個別で確認できる詳細画面です。 | <img src="https://github.com/user-attachments/assets/db02ae83-20bb-44fd-9b00-0425e862843b" width="100%"><br>詳細画面を開くことで、自身の敗因の傾向や詳しい分析結果を確認できます。 |
 | **7. 反省、対策メモを検索してみる機能** | |
 | <img src="https://github.com/user-attachments/assets/23a7183f-52cb-4540-8e0e-c684a9664037" width="100%"><br>キャラクター名やキーワードをもとに、過去の反省や対策メモを素早く検索・絞り込みできる機能を実装しました。 | |
+
+---
+
+## 🛠️ 使用技術 (Tech Stack)
+
+| カテゴリ | 技術・ツール名 |
+| :--- | :--- |
+| **バックエンド** | Ruby, Ruby on Rails |
+| **フロントエンド** | HTML, CSS, JavaScript |
+| **データベース** | PostgreSQL / SQLite |
+| **インフラ・環境構築** | Docker, Dockerfile |
+| **開発環境** | WSL (Ubuntu), VSCode |
+| **バージョン管理** | Git, GitHub |
+
+---
+
+## 📊 ER図（データベース設計）
+
+```mermaid
+erDiagram
+    Users ||--o{ Battles : "1対多 (投稿)"
+    Users ||--o{ CharacterMemos : "1対多 (作成)"
+    Battles ||--o{ BattleTags : "1対多"
+    Tags ||--o{ BattleTags : "1対多"
+    Characters ||--o{ CharacterMemos : "1対多"
+
+    Users {
+        bigint id PK
+        string email "メールアドレス"
+        string encrypted_password "パスワード"
+        string name "ユーザー名"
+        datetime created_at
+        datetime updated_at
+    }
+
+    Battles {
+        bigint id PK
+        bigint user_id FK "ユーザーID"
+        string my_character "自分の使用キャラ"
+        string enemy_character "対戦相手のキャラ"
+        integer result "勝敗 (WIN/LOSE)"
+        text reflection "10秒反省コメント"
+        datetime created_at
+        datetime updated_at
+    }
+
+    CharacterMemos {
+        bigint id PK
+        bigint user_id FK "ユーザーID"
+        bigint character_id FK "キャラクターID"
+        text important_point "最重要ポイント"
+        text awareness "自分の意識・習得したいこと"
+        text common_mistake "自分の悪癖・よくやるミス"
+        datetime created_at
+        datetime updated_at
+    }
+
+    Tags {
+        bigint id PK
+        string name "タグ名 (敗因タグなど)"
+        datetime created_at
+        datetime updated_at
+    }
+
+    BattleTags {
+        bigint id PK
+        bigint battle_id FK "対戦ログID"
+        bigint tag_id FK "タグID"
+        datetime created_at
+        datetime updated_at
+    }
+
+    Characters {
+        bigint id PK
+        string name "キャラクター名"
+        datetime created_at
+        datetime updated_at
+    }
