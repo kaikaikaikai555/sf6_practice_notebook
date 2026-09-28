@@ -46,61 +46,37 @@
 
 ```mermaid
 erDiagram
-    Users ||--o{ Battles : "1対多 (投稿)"
-    Users ||--o{ CharacterMemos : "1対多 (作成)"
-    Battles ||--o{ BattleTags : "1対多"
-    Tags ||--o{ BattleTags : "1対多"
-    Characters ||--o{ CharacterMemos : "1対多"
+    User ||--o{ MatchLog : "1対多"
+    User ||--o{ CharacterNote : "1対多"
+    User ||--o{ DefeatTag : "1対多"
+    MatchLog ||--o{ DefeatTag : "1対多（または中間テーブル等）"
 
-    Users {
+    User {
         bigint id PK
-        string email "メールアドレス"
-        string encrypted_password "パスワード"
-        string name "ユーザー名"
+        string email
+        string encrypted_password
         datetime created_at
         datetime updated_at
     }
 
-    Battles {
+    MatchLog {
         bigint id PK
-        bigint user_id FK "ユーザーID"
-        string my_character "自分の使用キャラ"
-        string enemy_character "対戦相手のキャラ"
-        integer result "勝敗 (WIN/LOSE)"
-        text reflection "10秒反省コメント"
+        bigint user_id FK
         datetime created_at
         datetime updated_at
     }
 
-    CharacterMemos {
+    CharacterNote {
         bigint id PK
-        bigint user_id FK "ユーザーID"
-        bigint character_id FK "キャラクターID"
-        text important_point "最重要ポイント"
-        text awareness "自分の意識・習得したいこと"
-        text common_mistake "自分の悪癖・よくやるミス"
+        bigint user_id FK
         datetime created_at
         datetime updated_at
     }
 
-    Tags {
+    DefeatTag {
         bigint id PK
-        string name "タグ名 (敗因タグなど)"
-        datetime created_at
-        datetime updated_at
-    }
-
-    BattleTags {
-        bigint id PK
-        bigint battle_id FK "対戦ログID"
-        bigint tag_id FK "タグID"
-        datetime created_at
-        datetime updated_at
-    }
-
-    Characters {
-        bigint id PK
-        string name "キャラクター名"
+        bigint user_id FK
+        bigint match_log_id FK
         datetime created_at
         datetime updated_at
     }
