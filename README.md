@@ -33,49 +33,73 @@
 
 | カテゴリ | 技術・ツール名 |
 | :--- | :--- |
-| **バックエンド** | Ruby, Ruby on Rails |
+| **バックエンド** | Ruby, Ruby on Rails (Ver. 7.2) |
 | **フロントエンド** | HTML, CSS, JavaScript |
 | **データベース** | PostgreSQL / SQLite |
+| **認証機能** | Devise (ユーザー管理) |
 | **インフラ・環境構築** | Docker, Dockerfile |
 | **開発環境** | WSL (Ubuntu), VSCode |
 | **バージョン管理** | Git, GitHub |
 
 ---
 
-## 📊 ER図（データベース設計）
-
-```mermaid
 erDiagram
-    User ||--o{ MatchLog : "所有する (1対多)"
-    User ||--o{ CharacterNote : "所有する (1対多)"
-    User ||--o{ DefeatTag : "所有する (1対多)"
-    MatchLog ||--o{ DefeatTag : "紐づく (1対多)"
+    Users ||--o{ CharacterNotes : "1対多 (dependent: destroy)"
+    Users ||--o{ MatchLogs : "1対多 (dependent: destroy)"
+    Users ||--o{ DefeatTags : "1対多 (dependent: destroy)"
+    MatchLogs }o--o{ DefeatTags : "多対多 (through: defeat_tags_match_logs)"
 
-    User {
+    Users {
         bigint id PK "ユーザーID"
+        string name "ユーザー名"
         string email "メールアドレス"
         string encrypted_password "暗号化パスワード"
+        datetime created_ai "作成日時"
+        datetime updated_at "更新日時"
+    }
+
+    CharacterNotes {
+        bigint id PK "キャラ対メモID"
+        bigint user_id FK "ユーザーID"
+        string opponent_character "対戦相手キャラ"
+        string my_character "使用キャラ"
+        string quick_summary "クイックサマリー"
+        text content "詳細内容"
+        text my_focus "自分の意識ポイント"
+        text bad_habit "よくある悪癖"
+        text key_point "最重要ポイント"
+        text my_awareness "気づき・反省"
+        text detail_memo "詳細メモ"
         datetime created_at "作成日時"
         datetime updated_at "更新日時"
     }
 
-    MatchLog {
+    MatchLogs {
         bigint id PK "対戦ログID"
         bigint user_id FK "ユーザーID"
+        bigint character_note_id FK "キャラ対メモID"
+        string opponent_character "対戦相手キャラ"
+        string my_character "使用キャラ"
+        string result "勝敗"
+        text memo "メモ"
+        text win_reason "勝因"
+        text defeat_reason "敗因"
         datetime created_at "作成日時"
         datetime updated_at "更新日時"
     }
 
-    CharacterNote {
-        bigint id PK "対策メモID"
-        bigint user_id FK "ユーザーID"
-        datetime created_at "作成日時"
-        datetime updated_at "更新日時"
-    }
-
-    DefeatTag {
+    DefeatTags {
         bigint id PK "タグID"
         bigint user_id FK "ユーザーID"
+        string name "タグ名"
+        string category "カテゴリ"
+        datetime created_at "作成日時"
+        datetime updated_at "更新日時"
+    }
+
+    defeat_tags_match_logs {
+        bigint id PK "中間ID"
+        bigint defeat_tag_id FK "敗因タグID"
         bigint match_log_id FK "対戦ログID"
         datetime created_at "作成日時"
         datetime updated_at "更新日時"
