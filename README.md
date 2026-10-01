@@ -124,6 +124,7 @@ graph TD
     style Client fill:#f9f,stroke:#333,stroke-width:2px
     style Rails fill:#bbf,stroke:#333,stroke-width:2px
 ```
+
 ---
 
 ## 🚀 今後の展望
