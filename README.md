@@ -125,3 +125,54 @@ graph TD
     style Rails fill:#bbf,stroke:#333,stroke-width:2px
     style DB fill:#bfb,stroke:#333,stroke-width:2px
 ```
+---
+
+graph TD
+    %% ユーザー・外部
+    Client["Client / Developer<br>(ブラウザ / VSCode)"] -->|HTTPSリクエスト| Internet((インターネット))
+
+    %% デプロイ・CI/CD
+    subgraph CICD ["GitHub / CI/CD"]
+        GitHub["GitHub Repository<br>(ソースコード管理)"]
+        Actions["GitHub Actions<br>(自動テスト・ビルド)"]
+    end
+
+    Client -.->|Push & Merge| GitHub
+    GitHub -.->|Trigger| Actions
+
+    %% 本番インフラ (Railway / Cloud)
+    subgraph Production ["Railway Cloud (本番環境)"]
+        subgraph PublicNetwork ["Public Network"]
+            LB["Railway Proxy / Load Balancer<br>(HTTPS終端)"]
+        end
+
+        subgraph PrivateNetwork ["Private Network (Secure)"]
+            subgraph AppContainer [Docker Container]
+                Rails["Ruby on Rails 7.2<br>(Webアプリ / Puma)"]
+            end
+
+            subgraph DBContainer [Database]
+                PG[(PostgreSQL<br>本番データベース)]
+            end
+        end
+
+        LB -->|リクエスト転送| Rails
+        Rails -->|データ保存・取得| PG
+    end
+
+    Internet -->|アクセス| LB
+
+    %% 監視ツール
+    subgraph Monitoring ["Monitoring & Error Tracking"]
+        Uptime["UptimeRobot<br>(死活監視)"]
+        Sentry["Sentry<br>(エラー監視)"]
+    end
+
+    Uptime -.->|HTTPチェック| LB
+    Rails -.->|エラー通知| Sentry
+
+    %% スタイリング
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style Rails fill:#bbf,stroke:#333,stroke-width:2px
+    style PG fill:#bfb,stroke:#333,stroke-width:2px
+    style LB fill:#fbb,stroke:#333,stroke-width:2px
