@@ -111,39 +111,28 @@ erDiagram
 
 ---
 
+```mermaid
 graph TD
-    %% ユーザー・インターネット
-    Client["Client (ブラウザ)"] -->|HTTPSリクエスト| Internet((インターネット))
-
-    %% 外部サービス・GitHub
-    GitHub["GitHub Repository<br>(ソースコード管理)"]
-    Actions["GitHub Actions<br>(自動テスト・ビルド)"]
-    Client -.->|Push & Merge| GitHub
-    GitHub -.->|Trigger| Actions
-
-    %% 本番インフラ (Railway)
-    subgraph Railway ["Railway Cloud (本番インフラ)"]
-        LB["Railway Proxy / Load Balancer"]
-        Rails["Ruby on Rails 7.2<br>(Webアプリ / Puma)"]
-        PG[(PostgreSQL<br>本番データベース)]
-
-        LB -->|リクエスト転送| Rails
-        Rails -->|データ保存・取得| PG
-    end
-
-    Internet -->|アクセス| LB
-
-    %% 監視ツール
-    subgraph Monitoring ["Monitoring"]
-        Uptime["UptimeRobot<br>(死活監視)"]
-        Sentry["Sentry<br>(エラー監視)"]
-    end
-
-    Uptime -.->|HTTPチェック| LB
-    Rails -.->|エラー通知| Sentry
-
-    %% スタイリング
-    style Client fill:#f9f,stroke:#333,stroke-width:2px
-    style Rails fill:#bbf,stroke:#333,stroke-width:2px
-    style PG fill:#bfb,stroke:#333,stroke-width:2px
-    style LB fill:#fbb,stroke:#333,stroke-width:2px
+Client["Client (ブラウザ)"] -->|HTTPSリクエスト| Internet((インターネット))
+GitHub["GitHub Repository<br>(ソースコード管理)"]
+Actions["GitHub Actions<br>(自動テスト・ビルド)"]
+Client -.->|Push & Merge| GitHub
+GitHub -.->|Trigger| Actions
+subgraph Railway ["Railway Cloud (本番インフラ)"]
+LB["Railway Proxy / Load Balancer"]
+Rails["Ruby on Rails 7.2<br>(Webアプリ / Puma)"]
+PG[(PostgreSQL<br>本番データベース)]
+LB -->|リクエスト転送| Rails
+Rails -->|データ保存・取得| PG
+end
+Internet -->|アクセス| LB
+subgraph Monitoring ["Monitoring"]
+Uptime["UptimeRobot<br>(死活監視)"]
+Sentry["Sentry<br>(エラー監視)"]
+end
+Uptime -.->|HTTPチェック| LB
+Rails -.->|エラー通知| Sentry
+style Client fill:#f9f,stroke:#333,stroke-width:2px
+style Rails fill:#bbf,stroke:#333,stroke-width:2px
+style PG fill:#bfb,stroke:#333,stroke-width:2px
+style LB fill:#fbb,stroke:#333,stroke-width:2px
