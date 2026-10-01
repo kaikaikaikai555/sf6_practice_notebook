@@ -108,36 +108,24 @@ erDiagram
         datetime 更新日 "更新日時"
     }
 ```
+
 ---
 
 graph TD
-    %% ユーザー・外部
-    Client["Client / Developer<br>(ブラウザ / VSCode)"] -->|HTTPSリクエスト| Internet((インターネット))
+    %% ユーザー・インターネット
+    Client["Client (ブラウザ)"] -->|HTTPSリクエスト| Internet((インターネット))
 
-    %% デプロイ・CI/CD
-    subgraph CICD ["GitHub / CI/CD"]
-        GitHub["GitHub Repository<br>(ソースコード管理)"]
-        Actions["GitHub Actions<br>(自動テスト・ビルド)"]
-    end
-
+    %% 外部サービス・GitHub
+    GitHub["GitHub Repository<br>(ソースコード管理)"]
+    Actions["GitHub Actions<br>(自動テスト・ビルド)"]
     Client -.->|Push & Merge| GitHub
     GitHub -.->|Trigger| Actions
 
-    %% 本番インフラ (Railway / Cloud)
-    subgraph Production ["Railway Cloud (本番環境)"]
-        subgraph PublicNetwork ["Public Network"]
-            LB["Railway Proxy / Load Balancer<br>(HTTPS終端)"]
-        end
-
-        subgraph PrivateNetwork ["Private Network (Secure)"]
-            subgraph AppContainer [Docker Container]
-                Rails["Ruby on Rails 7.2<br>(Webアプリ / Puma)"]
-            end
-
-            subgraph DBContainer [Database]
-                PG[(PostgreSQL<br>本番データベース)]
-            end
-        end
+    %% 本番インフラ (Railway)
+    subgraph Railway ["Railway Cloud (本番インフラ)"]
+        LB["Railway Proxy / Load Balancer"]
+        Rails["Ruby on Rails 7.2<br>(Webアプリ / Puma)"]
+        PG[(PostgreSQL<br>本番データベース)]
 
         LB -->|リクエスト転送| Rails
         Rails -->|データ保存・取得| PG
@@ -146,7 +134,7 @@ graph TD
     Internet -->|アクセス| LB
 
     %% 監視ツール
-    subgraph Monitoring ["Monitoring & Error Tracking"]
+    subgraph Monitoring ["Monitoring"]
         Uptime["UptimeRobot<br>(死活監視)"]
         Sentry["Sentry<br>(エラー監視)"]
     end
