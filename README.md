@@ -116,14 +116,10 @@ graph TD
     Client["Client (ブラウザ)"] -->|HTTPSリクエスト| Internet((インターネット))
 
     subgraph Railway ["Railway Cloud (本番インフラ)"]
-        Rails["Ruby on Rails 7.2<br>(Webアプリ / Puma)"]
-        PG[(PostgreSQL<br>本番データベース)]
-
-        Rails -->|データ保存・取得| PG
+        Rails["Ruby on Rails 7.2<br>(Webアプリ / SQLite)"]
     end
 
     Internet -->|アクセス| Rails
 
     style Client fill:#f9f,stroke:#333,stroke-width:2px
     style Rails fill:#bbf,stroke:#333,stroke-width:2px
-    style PG fill:#bfb,stroke:#333,stroke-width:2px
