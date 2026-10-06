@@ -9,7 +9,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # 本番環境（Render）でも動くように pg を追加
-gem "pg", "~> 1.1"
+gem "pg", "~> 1.7"
 
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
