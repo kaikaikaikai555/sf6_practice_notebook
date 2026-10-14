@@ -3,7 +3,7 @@
 ストリートファイター6（SF6）の対戦データを素早く記録し、自分の敗因傾向やキャラクター別の対策を効率的に管理・分析するためのWebアプリケーションです。
 
 ## 🌐 サービスURL
-- sf6practicenotebook-production.up.railway.app
+- - [https://sf6practicenotebook-production.up.railway.app](https://sf6practicenotebook-production.up.railway.app) ※ゲストログイン機能を用意しているため、登録なしですぐにお試しいただけます。
   ※ゲストログイン機能を用意しているため、登録なしですぐにお試しいただけます。
 
 ---
