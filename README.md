@@ -1,41 +1,144 @@
-#  SF6 Practice Notebook（スト6対戦反省・キャラ対策ノート）
+# 🥋 SF6 Practice Notebook（スト6対戦反省・キャラ対策ノート）
 
 ストリートファイター6（SF6）の対戦データを素早く記録し、自分の敗因傾向やキャラクター別の対策を効率的に管理・分析するためのWebアプリケーションです。
 
----
-
-##  使用技術・開発環境（Tech Stack）
-
-- **バックエンド**: Ruby 3.2.x / Ruby on Rails 7.x
-- **フロントエンド**: JavaScript (Importmap), HTML5, CSS3
-- **データベース**: SQLite (開発環境) / PostgreSQL (本番想定)
-- **認証機能**: Devise（ユーザー登録・ログイン機能）
-- **インフラ・環境**: Docker / Dockerfile, WSL (Ubuntu-24.04)
-- **コード品質・セキュリティ**: 
-  - RuboCop（コードの自動整形・規約チェック）
-  - Brakeman（セキュリティ脆弱性の自動スキャン）
-- **バージョン管理・CI**: Git, GitHub Actions (CI / Dependabot)
+## 🌐 サービスURL
+- - [https://sf6practicenotebook-production.up.railway.app](https://sf6practicenotebook-production.up.railway.app) ※ゲストログイン機能を用意しているため、登録なしですぐにお試しいただけます。
+  ※ゲストログイン機能を用意しているため、登録なしですぐにお試しいただけます。
 
 ---
 
-##  主な機能
-
-1. **10秒反省・対戦ログ記録**
-   - 試合直後に素早く「どのキャラに」「どう負けたか」をサクッと記録できます。
-2. **敗因タグ・集計機能**
-   - 敗因（例: 「対空漏れ」「インパクト」「投げ抜けミス」など）にタグを付与し、自分の弱点を一目で集計・把握できます。
-3. **キャラクター別対策メモ管理**
-   - キャラクターごとの対策ノートを作成・編集し、対戦成績のフィルタリングや詳細な振り返りを行えます。
-4. **ユーザー認証機能 (Devise)**
-   - ユーザーごとのデータ管理を安全に行うためのログイン・アカウント管理機能を実装しています。
-5. **レスポンシブ対応デザイン**
-   - スマホやPCなど、多様なデバイスから快適にアクセス・閲覧できるレイアウトに調整しています。
+## 🖼️ アプリケーションのイメージ
+<img width="1387" height="513" alt="スクリーンショット 2026-09-17 002430" src="https://github.com/user-attachments/assets/47a0dd7f-0b39-45e3-95f4-d3ba2171ebf7" />
 
 ---
 
-##  開発のプロセス（GitHub運用）
-機能追加やバグ修正ごとにブランチを切り、プルリクエスト（PR）を作成してマージする実務に近い開発フローを意識して実装を進めました。
-- **Phase1**: 初期セットアップとモデル・ルーティングの構築
-- **Phase2**: 10秒確認機能・検索機能・編集機能の実装
-- **Phase3**: 対戦ログの追加と画面リダイレクトの修正
-- **Phase4**: 敗因タグ機能の実装およびログイン画面のデザインブラッシュアップ
+## 📋 機能一覧
+
+| ログイン画面 | トップ画面 |
+| :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/81b7fd85-8dba-4827-9a0d-fe6c72181df6" width="100%"><br>登録せずにサービスをお試しいただけるゲストログイン機能などを実装しています。 | <img src="https://github.com/user-attachments/assets/e2d33d34-b785-425b-aeff-6340504d4ae1" width="100%"><br>アプリのコンセプトや概要をひと目で伝えるトップ画面です。 |
+| **1. 10秒反省機能（入力フォーム）** | **2. 10秒反省の敗因タグ機能** |
+| <img src="https://github.com/user-attachments/assets/12008c9a-1a41-47d8-9dc4-fd337367ee0e" width="100%" style="max-height: 250px; object-fit: contain;"><br>対戦直後に素早く試合結果や反省を記録するための10秒反省機能です。 | <img src="https://github.com/user-attachments/assets/a1ab09ec-acb4-46b4-8e7d-fc1467655218" width="100%"><br>敗因に対してタグを付与・選択することで、自身の弱点を分類できます。 |
+| **3. 対戦ログ** | **4. 新規メモによるキャラ対策ページ** |
+| <img src="https://github.com/user-attachments/assets/5f1bc234-e2d9-4030-ab5f-0bec9536b58b" width="100%"><br>登録した対戦履歴を一覧で確認し、日々の戦績の推移を把握できます。 | <img src="https://github.com/user-attachments/assets/98722811-a41a-4cf3-8e35-aec2bd042e1a" width="100%"><br>対戦相手のキャラクターごとに、新しい対策メモを作成・蓄積できます。 |
+| **5. 作成したものが見れる詳細画面** | **6. 詳細を開くと自分の敗因分析が見れる** |
+| <img src="https://github.com/user-attachments/assets/51ae8950-423c-4fe6-829d-c0b053909f65" width="100%"><br>登録した対戦ログや対策メモの内容を個別で確認できる詳細画面です。 | <img src="https://github.com/user-attachments/assets/db02ae83-20bb-44fd-9b00-0425e862843b" width="100%"><br>詳細画面を開くことで、自身の敗因の傾向や詳しい分析結果を確認できます。 |
+| **7. 反省、対策メモを検索してみる機能** | |
+| <img src="https://github.com/user-attachments/assets/23a7183f-52cb-4540-8e0e-c684a9664037" width="100%"><br>キャラクター名やキーワードをもとに、過去の反省や対策メモを素早く検索・絞り込みできる機能を実装しました。 | |
+
+---
+
+## 🛠️ 使用技術 (Tech Stack)
+
+| カテゴリ | 技術・ツール名 |
+| :--- | :--- |
+| **バックエンド** | Ruby, Ruby on Rails (Ver. 7.2) |
+| **フロントエンド** | HTML, CSS, JavaScript |
+| **データベース** | PostgreSQL / SQLite |
+| **認証機能** | Devise (ユーザー管理) |
+| **インフラ・環境構築** | Docker, Dockerfile |
+| **開発環境** | WSL (Ubuntu), VSCode |
+| **バージョン管理** | Git, GitHub |
+
+---
+
+## 📊 ER図（データベース設計）
+
+```mermaid
+erDiagram
+    Users ||--o{ CharacterNotes : "1対多"
+    Users ||--o{ MatchLogs : "1対多"
+    Users ||--o{ DefeatTags : "1対多"
+    MatchLogs }o--o{ DefeatTags : "多対多"
+
+    Users {
+        bigint ID PK "ユーザーID"
+        string 氏名 "ユーザー名"
+        string メールアドレス "メールアドレス"
+        string パスワード "暗号化パスワード"
+        datetime 作成日 "作成日時"
+        datetime 更新日 "更新日時"
+    }
+
+    CharacterNotes {
+        bigint ID PK "対策メモID"
+        bigint ユーザー_ID FK "ユーザーID"
+        string 対戦相手キャラ "対戦相手のキャラクター"
+        string 使用キャラ "自分の使用キャラクター"
+        string クイックサマリー "概要"
+        text 詳細内容 "詳細なメモ内容"
+        text 自分の意識ポイント "意識すること"
+        text よくある悪癖 "自身の悪い癖"
+        text 最重要ポイント "一番重要な点"
+        text 気づき反省 "振り返り"
+        text 詳細メモ "その他詳細"
+        datetime 作成日 "作成日時"
+        datetime 更新日 "更新日時"
+    }
+
+    MatchLogs {
+        bigint ID PK "対戦ログID"
+        bigint ユーザー_ID FK "ユーザーID"
+        bigint 対策メモ_ID FK "キャラ対メモID"
+        string 対戦相手キャラ "対戦相手のキャラクター"
+        string 使用キャラ "自分の使用キャラクター"
+        string 勝敗 "勝利/敗北"
+        text メモ "10秒反省コメントなど"
+        text 勝因 "勝てた要因"
+        text 敗因 "負けた要因"
+        datetime 作成日 "作成日時"
+        datetime 更新日 "更新日時"
+    }
+
+    DefeatTags {
+        bigint ID PK "タグID"
+        bigint ユーザー_ID FK "ユーザーID"
+        string タグ名 "敗因のタグ名"
+        string カテゴリ "タグカテゴリ"
+        datetime 作成日 "作成日時"
+        datetime 更新日 "更新日時"
+    }
+
+    defeat_tags_match_logs {
+        bigint ID PK "中間ID"
+        bigint 敗因タグ_ID FK "敗因タグID"
+        bigint 対戦ログ_ID FK "対戦ログID"
+        datetime 作成日 "作成日時"
+        datetime 更新日 "更新日時"
+    }
+```
+
+---
+
+```mermaid
+graph TD
+    Client["Client (ブラウザ)"] -->|HTTPSリクエスト| Internet((インターネット))
+
+    subgraph Railway ["Railway Cloud (本番インフラ)"]
+        Rails["Ruby on Rails 7.2<br>(Webアプリ / SQLite)"]
+    end
+
+    Internet -->|アクセス| Rails
+
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style Rails fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+---
+
+## 🚀 今後の展望
+
+本アプリケーションのさらなる価値向上と、開発・運用体制のブラッシュアップに向けて、以下の取り組みを進めていく予定です。
+
+### 1. コンテナ技術やインフラ周りの理解を深める
+- **Dockerなどの技術をもっと深く理解する**
+  - 開発環境から本番環境に至るまでの環境構築・運用をよりスムーズに行えるよう、インフラストラクチャへの理解をさらに深めていきたい
+
+### 2. GitHubを使ったコードの管理を丁寧にする
+- **実務を意識したバージョン管理の実践**
+  - ブランチの切り方やプルリクエストの書き方を意識し、チーム開発や実務の現場を想定したクリーンなコード管理と運用を心がける
+
+### 3. アプリの使い勝手やUI/UXを継続的に改善する
+- **ユーザー目線での操作性向上**
+  - 実際にアプリを触る中で見えてきた細かい操作性やデザインの改善を重ね、より快適で使いやすいサービスへとブラッシュアップしていきたい
